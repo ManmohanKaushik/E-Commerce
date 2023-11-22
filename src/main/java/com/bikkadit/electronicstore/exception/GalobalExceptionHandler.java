@@ -21,14 +21,14 @@ public class GalobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse> resourceNotFoundException(ResourceNotFoundException ex) {
-        logger.info("ResourceNotFound Exception Handler invoked ......................");
+        logger.info("ResourceNotFound Exception Handler invoked");
         ApiResponse response = ApiResponse.builder().message(ex.getMessage()).build();
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        logger.info("handMethodArgumentNotValid Exception Handler invoked ......................");
+        logger.info("handMethodArgumentNotValid Exception Handler invoked ");
         List<ObjectError> allErrors = ex.getBindingResult().getAllErrors();
         Map<String, Object> response = new HashMap<>();
         allErrors.stream().forEach((objectError) ->
@@ -38,5 +38,11 @@ public class GalobalExceptionHandler {
             response.put(field, massage);
         });
         return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ApiResponse> handBadRequestException(BadRequestException ex) {
+        logger.info("Bad Request Exception Handler invoked ");
+        ApiResponse response = ApiResponse.builder().message(ex.getMessage()).build();
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
