@@ -3,6 +3,7 @@ package com.bikkadit.electronicstore.services;
 import com.bikkadit.electronicstore.dto.UserDto;
 import com.bikkadit.electronicstore.helper.PegeableResponse;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface UserService {
@@ -17,7 +18,7 @@ public interface UserService {
 
     PegeableResponse<UserDto> getall(int pageNumber, int pageSize, String sortBy, String sortDir);
 
-    void deleteUser(String userId );
+    void deleteUser(String userId ) throws IOException;
 
     public List<UserDto> searchUser(String keyword);
 }

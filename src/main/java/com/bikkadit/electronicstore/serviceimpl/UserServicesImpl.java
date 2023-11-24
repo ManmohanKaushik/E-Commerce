@@ -13,11 +13,16 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -30,6 +35,8 @@ public class UserServicesImpl implements UserService {
     private UserRepo userRepo;
     @Autowired
     private ModelMapper modelMapper;
+    @Value("${user.profile.image.path}")
+    private String imagePath;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -45,30 +52,30 @@ public class UserServicesImpl implements UserService {
 
     @Override
     public UserDto updateUser(UserDto userDto, String userId) {
-        log.info("Request is sending into DAO layer for update user userId:{}",userId);
+        log.info("Request is sending into DAO layer for update user userId:{}", userId);
         User user = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.RESOURCENOTFOUND));
         user.setGender(userDto.getGender());
         user.setName(userDto.getName());
         user.setAbout(userDto.getAbout());
         user.setPassword(userDto.getPassword());
         User save = this.userRepo.save(user);
-        log.info("Response has  received  from DAO layer for update user userId:{}",userId);
+        log.info("Response has  received  from DAO layer for update user userId:{}", userId);
         return this.modelMapper.map(save, UserDto.class);
     }
 
     @Override
     public UserDto getUserByid(String userId) {
-        log.info("Request is sending into DAO layer for get user by userId:{}",userId);
+        log.info("Request is sending into DAO layer for get user by userId:{}", userId);
         User user = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.RESOURCENOTFOUND));
-        log.info("Response has  received  from DAO layer for get user by userId:{}",userId);
+        log.info("Response has  received  from DAO layer for get user by userId:{}", userId);
         return this.modelMapper.map(user, UserDto.class);
     }
 
     @Override
     public UserDto getUserByemail(String email) {
-        log.info("Request is sending into DAO layer for get user by email:{}",email);
+        log.info("Request is sending into DAO layer for get user by email:{}", email);
         User user = this.userRepo.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.EMAILID_NOTFOUND));
-        log.info("Response has  received  from DAO layer for get user by email:{}",email);
+        log.info("Response has  received  from DAO layer for get user by email:{}", email);
         return this.modelMapper.map(user, UserDto.class);
     }
 
@@ -84,21 +91,25 @@ public class UserServicesImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(String userId) {
-        log.info("Request is sending into DAO layer for delete user by userId:{}",userId);
+    public void deleteUser(String userId) throws IOException {
+        log.info("Request is sending into DAO layer for delete user by userId:{}", userId);
         User user = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.RESOURCENOTFOUND));
+
+        String fullPath = imagePath + user.getImageName();
+        Path path = Paths.get(fullPath);
+        Files.delete(path);
         this.userRepo.deleteById(userId);
-        log.info("Response has  received  from DAO layer for delete user by userId:{}",userId);
+        log.info("Response has  received  from DAO layer for delete user by userId:{}", userId);
     }
 
     @Override
     public List<UserDto> searchUser(String keyword) {
-        log.info("Request is sending into DAO layer for search user by keyword:{}",keyword);
+        log.info("Request is sending into DAO layer for search user by keyword:{}", keyword);
         List<UserDto> collectDto = this.userRepo.findByNameContaining(keyword)
                 .stream()
                 .map((e) -> this.modelMapper.map(e, UserDto.class))
                 .collect(Collectors.toList());
-        log.info("Response has  received  from DAO layer for search user by keyword:{}",keyword);
+        log.info("Response has  received  from DAO layer for search user by keyword:{}", keyword);
         return collectDto;
     }
 
