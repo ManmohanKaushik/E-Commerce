@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -109,7 +110,7 @@ public class UserController {
      * @return ApiResponse
      */
     @DeleteMapping("/userDel/{userId}")
-    public ResponseEntity<ApiResponse> deleteByid(@PathVariable String userId) {
+    public ResponseEntity<ApiResponse> deleteByid(@PathVariable String userId) throws IOException {
         log.info("Request is sending in service layer for delete user  userId:{}",userId);
         this.userService.deleteUser(userId);
         log.info("Response has received from service layer for delete user userId:{}",userId);
