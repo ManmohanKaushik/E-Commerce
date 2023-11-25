@@ -4,13 +4,14 @@ import com.bikkadit.electronicstore.exception.BadRequestException;
 import com.bikkadit.electronicstore.services.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.UUID;
-
+@Service
 public class FileServiceImpl implements FileService
 {
 private Logger log= LoggerFactory.getLogger(FileServiceImpl.class);
