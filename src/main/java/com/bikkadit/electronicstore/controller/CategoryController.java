@@ -44,7 +44,12 @@ public class CategoryController {
         log.info("Response has received from service layer for update categoryId :{}",categoryId);
         return new ResponseEntity<CategoryDto>(updateCategory,HttpStatus.OK);
     }
-
+    /**
+     * @author Manmohan Sharma
+     * @apiNote To delete data in database
+     * @since 1.0v
+     * @return categoryDto
+     */
     @DeleteMapping("/category/{categoryId}")
     public ResponseEntity<ApiResponse> deleteCategory(@PathVariable String categoryId){
         log.info("Request is sending in service layer for delete categoryId :{}",categoryId);
