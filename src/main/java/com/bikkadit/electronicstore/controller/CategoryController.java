@@ -33,7 +33,7 @@ public class CategoryController {
     /**
      * @author Manmohan Sharma
      * @apiNote To update data in database
-     * @param categoryDto
+     * @param categoryDto,categoryId
      * @since 1.0v
      * @return categoryDto
      */
@@ -47,8 +47,9 @@ public class CategoryController {
     /**
      * @author Manmohan Sharma
      * @apiNote To delete data in database
+     * @param categoryId
      * @since 1.0v
-     * @return categoryDto
+
      */
     @DeleteMapping("/category/{categoryId}")
     public ResponseEntity<ApiResponse> deleteCategory(@PathVariable String categoryId){
