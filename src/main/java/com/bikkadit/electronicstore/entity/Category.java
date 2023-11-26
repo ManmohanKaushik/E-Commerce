@@ -19,10 +19,10 @@ public class Category
     @Column(name="category_id")
     private String categoryId;
 
-    @Column(name="category_title",length = 40,nullable = false)
+    @Column(name="category_title")
     private String title;
 
-    @Column(name ="category_description",length = 100)
+    @Column(name ="category_description")
     private String description;
 
     @Column(name = "cover_image")

@@ -47,7 +47,7 @@ public class UserController {
      * @since 1.0v
      * @return UserDto
      */
-    @PutMapping("/userUpdate/{userId}")
+    @PutMapping("/user/{userId}")
     public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto, @PathVariable String userId) {
         log.info("Request is sending in service layer for update user containing userId:{}",userId);
         UserDto dto = this.userService.updateUser(userDto, userId);
@@ -61,7 +61,7 @@ public class UserController {
      * @param userId
      * @return UserDto
      */
-    @GetMapping("/userGet/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<UserDto> getUserByid(@PathVariable String userId) {
         log.info("Request is sending in service layer for get user by userId:{}",userId);
         UserDto byid = this.userService.getUserByid(userId);
@@ -109,7 +109,7 @@ public class UserController {
      * @since 1.0v
      * @return ApiResponse
      */
-    @DeleteMapping("/userDel/{userId}")
+    @DeleteMapping("/user/{userId}")
     public ResponseEntity<ApiResponse> deleteByid(@PathVariable String userId) throws IOException {
         log.info("Request is sending in service layer for delete user  userId:{}",userId);
         this.userService.deleteUser(userId);
