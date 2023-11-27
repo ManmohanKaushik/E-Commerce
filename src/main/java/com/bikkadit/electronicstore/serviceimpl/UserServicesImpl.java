@@ -94,7 +94,6 @@ public class UserServicesImpl implements UserService {
     public void deleteUser(String userId) throws IOException {
         log.info("Request is sending into DAO layer for delete user by userId:{}", userId);
         User user = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.RESOURCENOTFOUND));
-
         String fullPath = imagePath + user.getImageName();
         Path path = Paths.get(fullPath);
         Files.delete(path);
