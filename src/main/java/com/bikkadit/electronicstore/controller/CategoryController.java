@@ -59,8 +59,9 @@ public class CategoryController {
     public ResponseEntity<ApiResponse> deleteCategory(@PathVariable String categoryId){
         log.info("Request is sending in service layer for delete categoryId :{}",categoryId);
         this.categoryService.deleteCategory(categoryId);
+        ApiResponse apiResponse = ApiResponse.builder().message(MessageConstants.RESOURCEDELETE).Success(true).status(HttpStatus.OK).build();
         log.info("Response has received from service layer for delete categoryId :{}",categoryId);
-        return new ResponseEntity<ApiResponse>(new ApiResponse(MessageConstants.RESOURCEDELETE,true),HttpStatus.OK);
+        return new ResponseEntity<ApiResponse>( apiResponse,HttpStatus.OK);
     }
 
 /**

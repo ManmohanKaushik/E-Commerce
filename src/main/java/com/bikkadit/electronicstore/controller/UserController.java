@@ -161,7 +161,7 @@ public class UserController {
      * @since 1.0v
      */
     @PostMapping("/image/{userId}")
-    public ResponseEntity<ImageResponse> uploadUserImage(@RequestParam("userImage") MultipartFile image, @PathVariable String userId) throws IOException {
+    public ResponseEntity<ImageResponse> uploadUserImage(@RequestParam MultipartFile image, @PathVariable String userId) throws IOException {
         log.info("Request is sending in service layer for uploadUserImage with userId:{}", userId);
         String imageName = this.fileService.uploadFile(image, imageUploadPath);
         UserDto userDto = this.userService.getUserByid(userId);

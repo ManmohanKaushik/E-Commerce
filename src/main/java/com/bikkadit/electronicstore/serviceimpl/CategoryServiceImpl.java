@@ -73,7 +73,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public PegeableResponse<CategoryDto> getAll(int pageNumber, int pageSize, String sortBy, String sortDir) {
         log.info("Request is sending into DAO layer for get all category ");
-        //  Sort sort=(sortDir.equalsIgnoreCase("desc"))?Sort.by(sortBy).descending();
+        // Sort sort=(sortDir.equalsIgnoreCase("desc"))?Sort.by(sortBy).descending();
+        //Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()):
         PageRequest request = PageRequest.of(pageNumber, pageSize);
         Page<Category> all = this.categoryRepository.findAll(request);
         PegeableResponse<CategoryDto> response = Helper.pegeableResponse(all, CategoryDto.class);
