@@ -28,19 +28,19 @@ private Logger log= LoggerFactory.getLogger(FileServiceImpl.class);
             if (!folder.exists()){
                 folder.mkdirs();
                 Files.copy(file.getInputStream(), Paths.get(fullpathwithfileName));
-                return filenameWithextension;
-            }
+
+            } return filenameWithextension;
         }else {
             throw new BadRequestException("File with extension "+extension+" not allowed");
         }
 
 
-        return originalFilename;
+
     }
 
     @Override
     public InputStream getResource(String path, String name) throws FileNotFoundException {
-       String fullPath=path+File.separator+name;
+       String fullPath=path+name;
        InputStream inputStream=new FileInputStream(fullPath);
         return inputStream;
     }

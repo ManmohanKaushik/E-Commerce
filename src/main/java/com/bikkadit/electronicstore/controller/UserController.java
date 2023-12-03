@@ -167,7 +167,7 @@ public class UserController {
         UserDto userDto = this.userService.getUserByid(userId);
         userDto.setImageName(imageName);
         UserDto updatedImage = this.userService.updateUser(userDto, userId);
-        ImageResponse imageResponse = ImageResponse.builder().imageName(imageName).build();
+        ImageResponse imageResponse = ImageResponse.builder().message("image upload successfully ").imageName(imageName).build();
         log.info("Response has received from service layer for uploadUserImage with userId:{}", userId);
         return new ResponseEntity<ImageResponse>(imageResponse, HttpStatus.CREATED);
     }
@@ -177,9 +177,9 @@ public class UserController {
         UserDto user = this.userService.getUserByid(userId);
         log.info("User image name :{}", user.getImageName());
         InputStream resource = this.fileService.getResource(imageUploadPath, user.getImageName());
-        response.setContentType(MediaType.IMAGE_PNG_VALUE);
+       // response.setContentType(MediaType.IMAGE_PNG_VALUE);
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-        response.setContentType(MediaType.APPLICATION_PDF_VALUE);
+       // response.setContentType(MediaType.APPLICATION_PDF_VALUE);
         StreamUtils.copy(resource, response.getOutputStream());
 
     }
