@@ -27,6 +27,8 @@ public class ProductDto
 
     private Integer price;
 
+    private Integer discountPrice;
+
     private Integer quantity;
 
     private Date addedDate;

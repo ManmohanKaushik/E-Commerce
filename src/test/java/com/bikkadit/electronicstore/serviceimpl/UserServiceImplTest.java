@@ -13,11 +13,13 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import java.io.IOException;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-
+@SpringBootTest
 public class UserServiceImplTest {
    
     private UserRepo userRepo;
@@ -39,26 +41,28 @@ public class UserServiceImplTest {
                 .imageName("loardshiva.png")
                 .password("Monu12@20")
                 .build();
-       
-    }
-
-    @Test
-    public void getUserByidTest() {
-        String userId="123klk";
-        Mockito.when(userRepo.findById("123klk")).thenReturn(Optional.of(user));
-        UserDto AcutalUserDto = userServices.getUserByid(userId);
-        Assertions.assertNotNull(AcutalUserDto);
-        Assertions.assertEquals(user.getUserId(), AcutalUserDto.getUserId(), "userId not found");
 
     }
+
+
+@Test
+public void getUserByidTest() {
+    String userId = "123klk";
+    Mockito.when(userRepo.findById(userId)).thenReturn(Optional.of(user));
+    UserDto actualUserDto = userServices.getUserByid(userId);
+    Assertions.assertNotNull(actualUserDto);
+    Assertions.assertEquals(user.getUserId(), actualUserDto.getUserId(), "userId not found");
+}
+
+
 
     @Test
     public void getUserByemailTest() {
-        String email = "ram123@gamail.com";
-        Mockito.when(userRepo.findByEmail(email)).thenReturn(Optional.of(user));
-        UserDto actualemail = userServices.getUserByemail(email);
+        String emailId = "ram123@gamail.com";
+        Mockito.when(userRepo.findByEmail(emailId)).thenReturn(Optional.of(user));
+        UserDto actualemail = userServices.getUserByemail(emailId);
         Assertions.assertNotNull(actualemail);
-        Assertions.assertEquals(user.getEmail(), actualemail.getEmail());
+        Assertions.assertEquals(user.getEmail(), actualemail.getEmail(),"Email not found");
 
     }
 
