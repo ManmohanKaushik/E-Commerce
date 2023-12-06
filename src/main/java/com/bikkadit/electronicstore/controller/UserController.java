@@ -4,14 +4,13 @@ import com.bikkadit.electronicstore.constants.AppConstants;
 import com.bikkadit.electronicstore.constants.MessageConstants;
 import com.bikkadit.electronicstore.dto.UserDto;
 import com.bikkadit.electronicstore.helper.PegeableResponse;
-import com.bikkadit.electronicstore.payload.ApiResponse;
-import com.bikkadit.electronicstore.payload.ImageResponse;
+import com.bikkadit.electronicstore.controller.payload.ApiResponse;
+import com.bikkadit.electronicstore.controller.payload.ImageResponse;
 import com.bikkadit.electronicstore.services.FileService;
 import com.bikkadit.electronicstore.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -161,7 +159,7 @@ public class UserController {
      * @since 1.0v
      */
     @PostMapping("/image/{userId}")
-    public ResponseEntity<ImageResponse> uploadUserImage(@RequestParam MultipartFile image, @PathVariable String userId) throws IOException {
+    public ResponseEntity<ImageResponse> uploadUserImage(@RequestParam ("userImage")MultipartFile image, @PathVariable String userId) throws IOException {
         log.info("Request is sending in service layer for uploadUserImage with userId:{}", userId);
         String imageName = this.fileService.uploadFile(image, imageUploadPath);
         UserDto userDto = this.userService.getUserByid(userId);

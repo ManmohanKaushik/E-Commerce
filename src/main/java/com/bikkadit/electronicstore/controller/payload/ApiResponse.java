@@ -1,4 +1,4 @@
-package com.bikkadit.electronicstore.payload;
+package com.bikkadit.electronicstore.controller.payload;
 
 
 import lombok.*;

@@ -2,9 +2,9 @@ package com.bikkadit.electronicstore.controller;
 
 import com.bikkadit.electronicstore.constants.AppConstants;
 import com.bikkadit.electronicstore.constants.MessageConstants;
+import com.bikkadit.electronicstore.controller.payload.ApiResponse;
 import com.bikkadit.electronicstore.dto.CategoryDto;
 import com.bikkadit.electronicstore.helper.PegeableResponse;
-import com.bikkadit.electronicstore.payload.ApiResponse;
 import com.bikkadit.electronicstore.services.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
