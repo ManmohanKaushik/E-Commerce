@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -95,8 +96,14 @@ public class UserServicesImpl implements UserService {
         log.info("Request is sending into DAO layer for delete user by userId:{}", userId);
         User user = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.RESOURCENOTFOUND));
         String fullPath = imagePath + user.getImageName();
-        Path path = Paths.get(fullPath);
-        Files.delete(path);
+       try {
+           Path path = Paths.get(fullPath);
+           Files.delete(path);
+       }catch (NoSuchFileException e){
+           e.printStackTrace();
+       }catch (IOException ei){
+           ei.printStackTrace();
+       }
         this.userRepo.deleteById(userId);
         log.info("Response has  received  from DAO layer for delete user by userId:{}", userId);
     }

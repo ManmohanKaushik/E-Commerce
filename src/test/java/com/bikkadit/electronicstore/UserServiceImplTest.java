@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class UserServiceImplTest {
     @MockBean
     private UserRepo userRepo;
+    @Autowired
     @InjectMocks
     private UserServicesImpl userServices;
 
@@ -38,7 +39,6 @@ public class UserServiceImplTest {
     @BeforeEach
     public void init() {
         user = User.builder()
-                .userId(UUID.randomUUID().toString())
                 .name("Monu")
                 .email("ram123@gamail.com")
                 .about("Testing Demo")
@@ -74,7 +74,7 @@ public class UserServiceImplTest {
     @Test
     public void updateUserTest() {
         UserDto userDto = UserDto.builder()
-                .name("Monu Sharma")
+                .name("Monu")
                 .about("I am softEng.")
                 .gender("Male")
                 .imageName("loardshiva.png")
@@ -102,8 +102,8 @@ public class UserServiceImplTest {
 
     @Test
     public void deleteUserTest() throws IOException {
-        String userId="klkkuyy";
-        Mockito.when(userRepo.findById("klkkuyy")).thenReturn(Optional.of(user));
+        String userId="k2";
+        Mockito.when(userRepo.findById("k2")).thenReturn(Optional.of(user));
         userServices.deleteUser(userId);
         Mockito.verify(userRepo,Mockito.times(1)).delete(user);
     }
