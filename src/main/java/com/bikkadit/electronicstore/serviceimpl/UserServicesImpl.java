@@ -46,7 +46,7 @@ public class UserServicesImpl implements UserService {
         userDto.setUserId(userId);
         User user = this.modelMapper.map(userDto, User.class);
         User save = this.userRepo.save(user);
-        log.info("Response has  received  from DAO layer for save user.");
+        log.info("Response has  received  from DAO layer for save user");
         return this.modelMapper.map(save, UserDto.class);
 
     }
