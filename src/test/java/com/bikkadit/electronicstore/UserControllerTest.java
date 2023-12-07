@@ -1,4 +1,4 @@
-package com.bikkadit.electronicstore.controller;
+package com.bikkadit.electronicstore;
 
 import com.bikkadit.electronicstore.dto.UserDto;
 import com.bikkadit.electronicstore.entity.User;
@@ -15,10 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -57,7 +58,7 @@ public class UserControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").exists());
+                .andExpect((ResultMatcher) jsonPath("$.name").exists());
 
 
     }
@@ -82,8 +83,10 @@ public class UserControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").exists());
+                .andExpect((ResultMatcher) jsonPath("$.name").exists());
 
 
     }
+
+
 }

@@ -1,8 +1,9 @@
-package com.bikkadit.electronicstore.serviceimpl;
+package com.bikkadit.electronicstore;
 
 import com.bikkadit.electronicstore.dto.UserDto;
 import com.bikkadit.electronicstore.entity.User;
 import com.bikkadit.electronicstore.repository.UserRepo;
+import com.bikkadit.electronicstore.serviceimpl.UserServicesImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,26 +15,30 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
-@ExtendWith(MockitoExtension.class)
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest {
-   
+    @MockBean
     private UserRepo userRepo;
     @InjectMocks
     private UserServicesImpl userServices;
-    @Mock
+
     @Autowired
     private ModelMapper mapper;
     User user;
 
-
     @BeforeEach
     public void init() {
         user = User.builder()
+                .userId(UUID.randomUUID().toString())
                 .name("Monu")
                 .email("ram123@gamail.com")
                 .about("Testing Demo")
@@ -45,14 +50,14 @@ public class UserServiceImplTest {
     }
 
 
-@Test
-public void getUserByidTest() {
-    String userId = "123klk";
-    Mockito.when(userRepo.findById(userId)).thenReturn(Optional.of(user));
-    UserDto actualUserDto = userServices.getUserByid(userId);
-    Assertions.assertNotNull(actualUserDto);
-    Assertions.assertEquals(user.getUserId(), actualUserDto.getUserId(), "userId not found");
-}
+    @Test
+    public void getUserByidTest() {
+        String userId = "123klk";
+        Mockito.when(userRepo.findById(userId)).thenReturn(Optional.of(user));
+        UserDto actualUserDto = userServices.getUserByid(userId);
+       Assertions.assertNotNull(actualUserDto);
+        Assertions.assertEquals(user.getUserId(), actualUserDto.getUserId(), "userId not found");
+    }
 
 
 
@@ -61,7 +66,7 @@ public void getUserByidTest() {
         String emailId = "ram123@gamail.com";
         Mockito.when(userRepo.findByEmail(emailId)).thenReturn(Optional.of(user));
         UserDto actualemail = userServices.getUserByemail(emailId);
-        Assertions.assertNotNull(actualemail);
+        assertNotNull(actualemail);
         Assertions.assertEquals(user.getEmail(), actualemail.getEmail(),"Email not found");
 
     }
@@ -77,7 +82,7 @@ public void getUserByidTest() {
         Mockito.when(userRepo.findById(Mockito.anyString())).thenReturn(Optional.of(user));
         // UserDto actualUserDto1 = userServices.updateUser(userDto, userId);
         UserDto actualDto = mapper.map(user, UserDto.class);
-        Assertions.assertNotNull(actualDto);
+        assertNotNull(actualDto);
         Assertions.assertEquals(userDto.getName(), actualDto.getName());
 
 
@@ -88,7 +93,7 @@ public void getUserByidTest() {
     public void createUserTest() {
         Mockito.when(userRepo.save(Mockito.any())).thenReturn(user);
         UserDto user1 = userServices.createUser(mapper.map(user, UserDto.class));
-        Assertions.assertNotNull(user1);
+        assertNotNull(user1);
         //System.out.println(user1.getName());
         Assertions.assertEquals("Monu", user1.getName(), "user not found ");
 
@@ -107,4 +112,6 @@ public void getUserByidTest() {
     public void getall() {
 
     }
+
+
 }
