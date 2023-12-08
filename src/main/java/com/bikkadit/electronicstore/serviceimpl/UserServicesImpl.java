@@ -59,6 +59,7 @@ public class UserServicesImpl implements UserService {
         user.setName(userDto.getName());
         user.setAbout(userDto.getAbout());
         user.setPassword(userDto.getPassword());
+        user.setImageName(userDto.getImageName());
         User save = this.userRepo.save(user);
         log.info("Response has  received  from DAO layer for update user userId:{}", userId);
         return this.modelMapper.map(save, UserDto.class);

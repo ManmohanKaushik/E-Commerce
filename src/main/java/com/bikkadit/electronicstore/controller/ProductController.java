@@ -2,6 +2,7 @@ package com.bikkadit.electronicstore.controller;
 
 import com.bikkadit.electronicstore.constants.AppConstants;
 import com.bikkadit.electronicstore.constants.MessageConstants;
+import com.bikkadit.electronicstore.dto.UserDto;
 import com.bikkadit.electronicstore.payload.ApiResponse;
 import com.bikkadit.electronicstore.payload.ImageResponse;
 import com.bikkadit.electronicstore.dto.ProductDto;
@@ -12,11 +13,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 
 @RestController
 @RequestMapping("/apiPro")
@@ -28,7 +33,7 @@ public class ProductController {
     @Autowired
     private FileService fileService;
 
-    @Value("${product.image.path}")
+    @Value("${product.profile.image.path}")
     private String imagePath;
 
     /**
@@ -152,21 +157,39 @@ public class ProductController {
      * @since 1.0v
      */
 
-    @GetMapping("/image/productId")
+    @PostMapping ("/image/{productId}")
     public ResponseEntity<ImageResponse> uploadImage
-            (@PathVariable String productId,
-             @RequestParam("productImage")MultipartFile image) throws IOException {
+
+    (@RequestParam("productImage")MultipartFile image,@PathVariable String productId) throws IOException {
         log.info("Request is sending in service layer for uploadImage containing productId:{}", productId);
         String fileName = fileService.uploadFile(image, imagePath);
         ProductDto dto = productService.getByid(productId);
         dto.setProductImageName(fileName);
         ProductDto updateProduct = productService.updateProduct(dto, productId);
-        ImageResponse response = ImageResponse.builder()
-                .imageName(updateProduct.getProductImageName())
-                .message(MessageConstants.PRODUCT_IMAGE).status(HttpStatus.CREATED)
-                .Success(true)
-                .build();
+        ImageResponse response = ImageResponse.builder().message(MessageConstants.PRODUCT_IMAGE).status(HttpStatus.CREATED).imageName(updateProduct.getProductImageName()).Success(true).build();
         log.info("Response has received from service layer for uploadImage of product containing productId:{}", productId);
         return new ResponseEntity<>(response,HttpStatus.CREATED);
+
     }
+    /**
+     * @param productId
+     * @return ImageResponse
+     * @author Manmohan Sharma
+     * @apiNote To serverProductImage in database
+     * @since 1.0v
+     */
+
+    @GetMapping("/image/{productId}")
+    public void serverProductImage(@PathVariable String productId, HttpServletResponse response) throws IOException {
+        log.info("Request is sending in service layer for get Project Image containing productId:{}", productId);
+        ProductDto dto = this.productService.getByid(productId);
+        log.info("Product image name :{}", dto.getProductImageName());
+        InputStream resource = this.fileService.getResource(imagePath, dto.getProductImageName());
+        response.setContentType(MediaType.IMAGE_PNG_VALUE);
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        StreamUtils.copy(resource, response.getOutputStream());
+        log.info("Response has received from service layer for get Project Image of product containing productId:{}", productId);
+    }
+
 }
+

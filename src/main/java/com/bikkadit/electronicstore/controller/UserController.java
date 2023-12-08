@@ -165,7 +165,7 @@ public class UserController {
         UserDto userDto = this.userService.getUserByid(userId);
         userDto.setImageName(imageName);
         UserDto updatedImage = this.userService.updateUser(userDto, userId);
-        ImageResponse imageResponse = ImageResponse.builder().message(MessageConstants.USER_IMAGE).imageName(imageName).Success(true).build();
+        ImageResponse imageResponse = ImageResponse.builder().message(MessageConstants.USER_IMAGE).status(HttpStatus.CREATED).imageName(imageName).Success(true).build();
         log.info("Response has received from service layer for uploadUserImage with userId:{}", userId);
         return new ResponseEntity<>(imageResponse, HttpStatus.CREATED);
     }
