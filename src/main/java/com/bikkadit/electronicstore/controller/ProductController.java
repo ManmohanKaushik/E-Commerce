@@ -166,7 +166,7 @@ public class ProductController {
                 .message(MessageConstants.PRODUCT_IMAGE).status(HttpStatus.CREATED)
                 .Success(true)
                 .build();
-        log.info("Response has received from service layer for uploadImage product containing productId:{}", productId);
+        log.info("Response has received from service layer for uploadImage of product containing productId:{}", productId);
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
 }
