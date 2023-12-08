@@ -1,4 +1,4 @@
-package com.bikkadit.electronicstore.repository;
+package com.bikkadit.electronicstore.serviceimpl.repository;
 
 import com.bikkadit.electronicstore.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

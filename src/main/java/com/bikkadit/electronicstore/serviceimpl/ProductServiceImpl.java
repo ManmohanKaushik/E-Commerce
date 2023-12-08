@@ -6,7 +6,7 @@ import com.bikkadit.electronicstore.entity.Product;
 import com.bikkadit.electronicstore.exception.ResourceNotFoundException;
 import com.bikkadit.electronicstore.helper.Helper;
 import com.bikkadit.electronicstore.helper.PegeableResponse;
-import com.bikkadit.electronicstore.repository.ProductRepository;
+import com.bikkadit.electronicstore.serviceimpl.repository.ProductRepository;
 import com.bikkadit.electronicstore.services.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -53,6 +53,7 @@ public class ProductServiceImpl implements ProductService {
         product.setQuantity(productDto.getQuantity());
         product.setStock(productDto.isStock());
         product.setLive(productDto.isLive());
+        product.setProductImageName(productDto.getProductImageName());
         Product update = this.productRepository.save(product);
         log.info("Response has  received  from DAO layer for update product containing  productId :{}",productId);
         return mapper.map(update,ProductDto.class);

@@ -4,8 +4,8 @@ import com.bikkadit.electronicstore.constants.AppConstants;
 import com.bikkadit.electronicstore.constants.MessageConstants;
 import com.bikkadit.electronicstore.dto.UserDto;
 import com.bikkadit.electronicstore.helper.PegeableResponse;
-import com.bikkadit.electronicstore.controller.payload.ApiResponse;
-import com.bikkadit.electronicstore.controller.payload.ImageResponse;
+import com.bikkadit.electronicstore.payload.ApiResponse;
+import com.bikkadit.electronicstore.payload.ImageResponse;
 import com.bikkadit.electronicstore.services.FileService;
 import com.bikkadit.electronicstore.services.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -165,9 +165,9 @@ public class UserController {
         UserDto userDto = this.userService.getUserByid(userId);
         userDto.setImageName(imageName);
         UserDto updatedImage = this.userService.updateUser(userDto, userId);
-        ImageResponse imageResponse = ImageResponse.builder().message("image upload successfully ").imageName(imageName).build();
+        ImageResponse imageResponse = ImageResponse.builder().message(MessageConstants.USER_IMAGE).imageName(imageName).Success(true).build();
         log.info("Response has received from service layer for uploadUserImage with userId:{}", userId);
-        return new ResponseEntity<ImageResponse>(imageResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(imageResponse, HttpStatus.CREATED);
     }
 
     @GetMapping("/image/{userId}")

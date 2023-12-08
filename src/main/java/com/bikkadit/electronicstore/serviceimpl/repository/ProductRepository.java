@@ -1,4 +1,4 @@
-package com.bikkadit.electronicstore.repository;
+package com.bikkadit.electronicstore.serviceimpl.repository;
 
 import com.bikkadit.electronicstore.entity.Product;
 import org.springframework.data.domain.Page;

@@ -1,6 +1,6 @@
 package com.bikkadit.electronicstore.exception;
 
-import com.bikkadit.electronicstore.controller.payload.ApiResponse;
+import com.bikkadit.electronicstore.payload.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

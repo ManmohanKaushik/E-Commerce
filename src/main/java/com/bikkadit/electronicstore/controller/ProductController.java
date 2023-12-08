@@ -2,15 +2,21 @@ package com.bikkadit.electronicstore.controller;
 
 import com.bikkadit.electronicstore.constants.AppConstants;
 import com.bikkadit.electronicstore.constants.MessageConstants;
-import com.bikkadit.electronicstore.controller.payload.ApiResponse;
+import com.bikkadit.electronicstore.payload.ApiResponse;
+import com.bikkadit.electronicstore.payload.ImageResponse;
 import com.bikkadit.electronicstore.dto.ProductDto;
 import com.bikkadit.electronicstore.helper.PegeableResponse;
+import com.bikkadit.electronicstore.services.FileService;
 import com.bikkadit.electronicstore.services.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/apiPro")
@@ -18,6 +24,12 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private FileService fileService;
+
+    @Value("${product.image.path}")
+    private String imagePath;
 
     /**
      * @param productDto
@@ -131,5 +143,30 @@ public class ProductController {
         PegeableResponse<ProductDto> title = this.productService.searchByTitle(subTitle, pageNumber, pageSize, sortBy, sortDir);
         log.info("Response has received from service layer for get all live product ");
         return new ResponseEntity<PegeableResponse<ProductDto>>(title, HttpStatus.OK);
+    }
+    /**
+     * @param productId
+     * @return ImageResponse
+     * @author Manmohan Sharma
+     * @apiNote To uploadImage in database
+     * @since 1.0v
+     */
+
+    @GetMapping("/image/productId")
+    public ResponseEntity<ImageResponse> uploadImage
+            (@PathVariable String productId,
+             @RequestParam("productImage")MultipartFile image) throws IOException {
+        log.info("Request is sending in service layer for uploadImage containing productId:{}", productId);
+        String fileName = fileService.uploadFile(image, imagePath);
+        ProductDto dto = productService.getByid(productId);
+        dto.setProductImageName(fileName);
+        ProductDto updateProduct = productService.updateProduct(dto, productId);
+        ImageResponse response = ImageResponse.builder()
+                .imageName(updateProduct.getProductImageName())
+                .message(MessageConstants.PRODUCT_IMAGE).status(HttpStatus.CREATED)
+                .Success(true)
+                .build();
+        log.info("Response has received from service layer for uploadImage product containing productId:{}", productId);
+        return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
 }

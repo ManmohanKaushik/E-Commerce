@@ -6,7 +6,7 @@ import com.bikkadit.electronicstore.entity.Category;
 import com.bikkadit.electronicstore.exception.ResourceNotFoundException;
 import com.bikkadit.electronicstore.helper.Helper;
 import com.bikkadit.electronicstore.helper.PegeableResponse;
-import com.bikkadit.electronicstore.repository.CategoryRepository;
+import com.bikkadit.electronicstore.serviceimpl.repository.CategoryRepository;
 import com.bikkadit.electronicstore.services.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

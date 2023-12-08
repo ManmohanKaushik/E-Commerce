@@ -2,14 +2,13 @@ package com.bikkadit.electronicstore;
 
 import com.bikkadit.electronicstore.dto.UserDto;
 import com.bikkadit.electronicstore.entity.User;
-import com.bikkadit.electronicstore.repository.UserRepo;
+import com.bikkadit.electronicstore.serviceimpl.repository.UserRepo;
 import com.bikkadit.electronicstore.serviceimpl.UserServicesImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
@@ -19,7 +18,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -55,10 +53,9 @@ public class UserServiceImplTest {
         String userId = "123klk";
         Mockito.when(userRepo.findById(userId)).thenReturn(Optional.of(user));
         UserDto actualUserDto = userServices.getUserByid(userId);
-       Assertions.assertNotNull(actualUserDto);
+        Assertions.assertNotNull(actualUserDto);
         Assertions.assertEquals(user.getUserId(), actualUserDto.getUserId(), "userId not found");
     }
-
 
 
     @Test
@@ -67,7 +64,7 @@ public class UserServiceImplTest {
         Mockito.when(userRepo.findByEmail(emailId)).thenReturn(Optional.of(user));
         UserDto actualemail = userServices.getUserByemail(emailId);
         assertNotNull(actualemail);
-        Assertions.assertEquals(user.getEmail(), actualemail.getEmail(),"Email not found");
+        Assertions.assertEquals(user.getEmail(), actualemail.getEmail(), "Email not found");
 
     }
 
@@ -102,10 +99,10 @@ public class UserServiceImplTest {
 
     @Test
     public void deleteUserTest() throws IOException {
-        String userId="k2";
+        String userId = "k2";
         Mockito.when(userRepo.findById("k2")).thenReturn(Optional.of(user));
         userServices.deleteUser(userId);
-        Mockito.verify(userRepo,Mockito.times(1)).delete(user);
+        Mockito.verify(userRepo, Mockito.times(1)).delete(user);
     }
 
     @Test

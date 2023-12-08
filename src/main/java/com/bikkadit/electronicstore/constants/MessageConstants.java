@@ -11,5 +11,9 @@ public class MessageConstants {
 
     public static final String PRODUCT_DELETE= "Product Data deleted Successfully";
 
+    public static final String PRODUCT_IMAGE= "Product Image upload Successfully";
+
+    public static final String USER_IMAGE= "Usesr Image upload Successfully";
+
 
 }
