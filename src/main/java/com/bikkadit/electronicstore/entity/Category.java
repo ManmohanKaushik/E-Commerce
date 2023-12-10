@@ -26,7 +26,7 @@ public class Category
 
     @Column(name = "cover_image")
     private String coverImage;
-//
-//    @OneToMany(mappedBy = "category",cascade= CascadeType.ALL,fetch = FetchType.LAZY)
-//    private List<Product> products=new ArrayList<>();
+
+    @OneToMany(mappedBy = "category",cascade= CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Product> products=new ArrayList<>();
 }

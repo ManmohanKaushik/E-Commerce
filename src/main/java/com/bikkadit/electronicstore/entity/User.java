@@ -3,10 +3,9 @@ package com.bikkadit.electronicstore.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "User_Details")
@@ -37,4 +36,6 @@ public class User {
     @Column(name = "user_image_Name")
     private String imageName;
 
+    @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private List<CartItem> items =new ArrayList<>();
 }

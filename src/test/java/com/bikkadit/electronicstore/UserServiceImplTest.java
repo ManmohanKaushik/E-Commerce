@@ -2,7 +2,7 @@ package com.bikkadit.electronicstore;
 
 import com.bikkadit.electronicstore.dto.UserDto;
 import com.bikkadit.electronicstore.entity.User;
-import com.bikkadit.electronicstore.serviceimpl.repository.UserRepo;
+import com.bikkadit.electronicstore.repository.UserRepo;
 import com.bikkadit.electronicstore.serviceimpl.UserServicesImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
