@@ -13,7 +13,13 @@ public class MessageConstants {
 
     public static final String PRODUCT_IMAGE= "Product Image upload Successfully";
 
-    public static final String USER_IMAGE= "Usesr Image upload Successfully";
+    public static final String USER_IMAGE= "User Image upload Successfully";
+
+    public static final String CART_ITEM = "CartItem is  not found .";
+
+    public static final String USER_NOTFOUND= "User not found ";
+
+    public static final String CART_BLANK="Not cart is blank";
 
 
 }
