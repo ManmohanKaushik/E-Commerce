@@ -21,5 +21,9 @@ public class MessageConstants {
 
     public static final String CART_BLANK="Not cart is blank";
 
+    public static final String QUANTITY_NOTVALID="Request Quantity is not valid";
+
+
+
 
 }

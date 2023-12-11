@@ -28,10 +28,9 @@ public class CartController {
     @PostMapping("/cart/{userId}")
     public ResponseEntity<CartDto> addItemToCart(@PathVariable String userId, @RequestBody AddItemToCartRequest request) {
         log.info("Request is sending in service layer for add Item To Cart  with userId :{} " ,userId);
-
-
+        CartDto cartDto = cartService.addItemToCart(userId, request);
         log.info("Response has received from service layer for add Item To Cart  with userId :{} " ,userId);
-        return null;
+        return new ResponseEntity<>(cartDto,HttpStatus.OK);
     }
     /**
      * @author Manmohan Sharma

@@ -1,9 +1,15 @@
 package com.bikkadit.electronicstore.entity;
 
-import javax.persistence.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.*;
+@Getter
+@Setter
 @Entity
 @Table(name = "Cart_item")
+@Builder
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
