@@ -1,4 +1,4 @@
-package com.bikkadit.electronicstore.serviceimpl;
+package com.bikkadit.electronicstore.services.impl;
 
 import com.bikkadit.electronicstore.constants.MessageConstants;
 import com.bikkadit.electronicstore.dto.CartDto;
@@ -9,11 +9,11 @@ import com.bikkadit.electronicstore.entity.User;
 import com.bikkadit.electronicstore.exception.BadRequestException;
 import com.bikkadit.electronicstore.exception.ResourceNotFoundException;
 import com.bikkadit.electronicstore.payload.AddItemToCartRequest;
-import com.bikkadit.electronicstore.repository.CartItemRepository;
 import com.bikkadit.electronicstore.repository.CartRepository;
 import com.bikkadit.electronicstore.repository.ProductRepository;
 import com.bikkadit.electronicstore.repository.UserRepo;
 import com.bikkadit.electronicstore.services.CartService;
+import com.bikkadit.electronicstore.repository.CartItemRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

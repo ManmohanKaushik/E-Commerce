@@ -1,4 +1,4 @@
-package com.bikkadit.electronicstore.serviceimpl;
+package com.bikkadit.electronicstore.services.impl;
 
 import com.bikkadit.electronicstore.constants.MessageConstants;
 import com.bikkadit.electronicstore.dto.CategoryDto;

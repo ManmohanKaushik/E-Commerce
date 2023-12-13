@@ -12,7 +12,7 @@ public interface ProductService {
 
     public ProductDto getByid(String productId);
 
-    public PegeableResponse<ProductDto> getAllProduct(int pageNumber,int pageSize,String sortBy,String sortDir);
+    public PegeableResponse<ProductDto> getAllProduct(int pageNumber, int pageSize, String sortBy, String sortDir);
 
     public PegeableResponse<ProductDto> getAllLive(int pageNumber,int pageSize,String sortBy,String sortDir);
 
