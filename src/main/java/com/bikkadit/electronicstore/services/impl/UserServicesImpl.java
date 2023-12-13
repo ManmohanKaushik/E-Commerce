@@ -93,7 +93,7 @@ public class UserServicesImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(String userId) throws IOException {
+    public void deleteUser(String userId)  {
         log.info("Request is sending into DAO layer for delete user by userId:{}", userId);
         User user = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.RESOURCENOTFOUND));
         String fullPath = imagePath + user.getImageName();

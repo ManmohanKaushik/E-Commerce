@@ -39,6 +39,6 @@ public class User {
     @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<CartItem> items =new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
-    private List<Order> orders=new ArrayList<>();
+//   @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+//   private List<Order> orders=new ArrayList<>();
 }

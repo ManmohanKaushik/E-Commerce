@@ -2,6 +2,7 @@ package com.bikkadit.electronicstore.services;
 
 import com.bikkadit.electronicstore.dto.UserDto;
 import com.bikkadit.electronicstore.entity.User;
+import com.bikkadit.electronicstore.helper.PegeableResponse;
 import com.bikkadit.electronicstore.repository.UserRepo;
 
 import org.junit.jupiter.api.Assertions;
@@ -14,8 +15,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -38,7 +44,7 @@ public class UserServiceTest {
                 .email("ram123@gamail.com")
                 .about("Testing Demo")
                 .gender("Male")
-                .imageName("loardshiva.png")
+                .imageName("monu.jpg")
                 .password("Monu12@20")
                 .build();
 
@@ -71,7 +77,7 @@ public class UserServiceTest {
                 .name("Monu")
                 .about("I am softEng.")
                 .gender("Male")
-                .imageName("loardshiva.png")
+                .imageName("monu.jpg")
                 .build();
         Mockito.when(userRepo.findById(Mockito.anyString())).thenReturn(Optional.of(user));
         // UserDto actualUserDto1 = userServices.updateUser(userDto, userId);
@@ -98,15 +104,35 @@ public class UserServiceTest {
 
     @Test
     public void deleteUserTest() throws IOException {
-        String userId = "k2";
-        Mockito.when(userRepo.findById("k2")).thenReturn(Optional.of(user));
+        String userId = "123klmn";
+        Mockito.when(userRepo.findById("123klmn")).thenReturn(Optional.of(user));
         userServices.deleteUser(userId);
         Mockito.verify(userRepo, Mockito.times(1)).delete(user);
     }
 
     @Test
-    public void getall() {
-
+    public void getallTest() {
+     User   user1 = User.builder()
+                .name("Sonu")
+                .email("ram123@gamail.com")
+                .about("Testing Demo")
+                .gender("Male")
+                .imageName("monu.jpg")
+                .password("Monu12@20")
+                .build();
+        User user2 = User.builder()
+                .name("Tonu")
+                .email("ram123@gamail.com")
+                .about("Testing Demo")
+                .gender("Male")
+                .imageName("monu.jpg")
+                .password("Monu12@20")
+                .build();
+        List<User> userList= Arrays.asList(user,user1,user2);
+        Page<User> page= new PageImpl<>(userList);
+        Mockito.when(userRepo.findAll((Pageable)Mockito.any() )).thenReturn(page);
+        PegeableResponse<UserDto> getall = userServices.getall(1,2,"name","asc");
+        Assertions.assertEquals(3,getall.getContent().size());
     }
 
 }

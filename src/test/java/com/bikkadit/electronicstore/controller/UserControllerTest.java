@@ -56,7 +56,7 @@ public class UserControllerTest {
         UserDto dto = mapper.map(user, UserDto.class);
         Mockito.when(userService.createUser(Mockito.any())).thenReturn(dto);
 
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/user")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(convertObjectToJsonString(user))
                         .accept(MediaType.APPLICATION_JSON)
@@ -81,7 +81,7 @@ public class UserControllerTest {
         String userId = "12345";
         UserDto dto = this.mapper.map(user, UserDto.class);
         Mockito.when(userService.updateUser(Mockito.any(), Mockito.anyString())).thenReturn(dto);
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/user/" + userId)
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/api/user/" + userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(convertObjectToJsonString(user))
                         .accept(MediaType.APPLICATION_JSON)
