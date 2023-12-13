@@ -50,6 +50,7 @@ public class ProductController {
         log.info("Response has received from service layer for create product ");
         return new ResponseEntity<ProductDto>(product, HttpStatus.CREATED);
     }
+
     /**
      * @param productId
      * @return productDto
@@ -64,6 +65,7 @@ public class ProductController {
         log.info("Response has received from service layer for updated product containing productId:{}", productId);
         return new ResponseEntity<ProductDto>(updateProduct, HttpStatus.CREATED);
     }
+
     /**
      * @param productId
      * @return productDto
@@ -78,6 +80,7 @@ public class ProductController {
         log.info("Response has received from service layer for get by product containing productId:{}", productId);
         return new ResponseEntity<ProductDto>(dto, HttpStatus.OK);
     }
+
     /**
      * @return productDto
      * @author Manmohan Sharma
@@ -86,15 +89,16 @@ public class ProductController {
      */
     @GetMapping("/products")
     public ResponseEntity<PegeableResponse<ProductDto>> getAllProduct
-            (@RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) int pageNumber,
-             @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) int pageSize,
-             @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_SUBTITLE, required = false) String sortBy,
-             @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false) String sortDir) {
+    (@RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) int pageNumber,
+     @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) int pageSize,
+     @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_SUBTITLE, required = false) String sortBy,
+     @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false) String sortDir) {
         log.info("Request is sending in service layer for get all product ");
         PegeableResponse<ProductDto> allProduct = this.productService.getAllProduct(pageNumber, pageSize, sortBy, sortDir);
         log.info("Response has received from service layer for get all product ");
         return new ResponseEntity<PegeableResponse<ProductDto>>(allProduct, HttpStatus.OK);
     }
+
     /**
      * @param productId
      * @return ApiResponse
@@ -114,6 +118,7 @@ public class ProductController {
         log.info("Response has received from service layer for delete product containing productId:{}", productId);
         return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
     }
+
     /**
      * @return productDto
      * @author Manmohan Sharma
@@ -131,6 +136,7 @@ public class ProductController {
         log.info("Response has received from service layer for get all live product ");
         return new ResponseEntity<PegeableResponse<ProductDto>>(live, HttpStatus.OK);
     }
+
     /**
      * @return productDto
      * @author Manmohan Sharma
@@ -139,16 +145,17 @@ public class ProductController {
      */
     @GetMapping("/search")
     public ResponseEntity<PegeableResponse<ProductDto>> searchByTitle
-            (@RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) int pageNumber,
-             @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) int pageSize,
-             @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
-             @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false) String sortDir,
-             @RequestParam(value = "subTitle", defaultValue = AppConstants.SORT_SUBTITLE, required = false) String subTitle ){
+    (@RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) int pageNumber,
+     @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) int pageSize,
+     @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+     @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false) String sortDir,
+     @RequestParam(value = "subTitle", defaultValue = AppConstants.SORT_SUBTITLE, required = false) String subTitle) {
         log.info("Request is sending in service layer for get all live product ");
         PegeableResponse<ProductDto> title = this.productService.searchByTitle(subTitle, pageNumber, pageSize, sortBy, sortDir);
         log.info("Response has received from service layer for get all live product ");
         return new ResponseEntity<PegeableResponse<ProductDto>>(title, HttpStatus.OK);
     }
+
     /**
      * @param productId
      * @return ImageResponse
@@ -157,10 +164,10 @@ public class ProductController {
      * @since 1.0v
      */
 
-    @PostMapping ("/image/{productId}")
+    @PostMapping("/image/{productId}")
     public ResponseEntity<ImageResponse> uploadImage
 
-    (@RequestParam("productImage")MultipartFile image,@PathVariable String productId) throws IOException {
+    (@RequestParam("productImage") MultipartFile image, @PathVariable String productId) throws IOException {
         log.info("Request is sending in service layer for uploadImage containing productId:{}", productId);
         String fileName = fileService.uploadFile(image, imagePath);
         ProductDto dto = productService.getByid(productId);
@@ -168,9 +175,10 @@ public class ProductController {
         ProductDto updateProduct = productService.updateProduct(dto, productId);
         ImageResponse response = ImageResponse.builder().message(MessageConstants.PRODUCT_IMAGE).status(HttpStatus.CREATED).imageName(updateProduct.getProductImageName()).Success(true).build();
         log.info("Response has received from service layer for uploadImage of product containing productId:{}", productId);
-        return new ResponseEntity<>(response,HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
 
     }
+
     /**
      * @param productId
      * @return ImageResponse
@@ -189,6 +197,60 @@ public class ProductController {
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         StreamUtils.copy(resource, response.getOutputStream());
         log.info("Response has received from service layer for get Project Image of product containing productId:{}", productId);
+    }
+
+    /**
+     * @param categoryId
+     * @return ProductDto
+     * @author Manmohan Sharma
+     * @apiNote To createWithCategory in database
+     * @since 1.0v
+     */
+    @PostMapping("/products/{categoryId}/products")
+    public ResponseEntity<ProductDto> createWithCategory(@PathVariable String categoryId, @RequestBody ProductDto productDto) {
+        log.info("Request is sending in service layer for create with categoryId:{}", categoryId);
+        ProductDto productWithCategory = this.productService.createWithCategory(productDto, categoryId);
+        log.info("Response has received from service layer for create with categoryId:{}", categoryId);
+        return new ResponseEntity<ProductDto>(productWithCategory, HttpStatus.CREATED);
+    }
+
+    /**
+     * @param categoryId,productId
+     * @return ProductDto
+     * @author Manmohan Sharma
+     * @apiNote To updateWithCategory in database
+     * @since 1.0v
+     */
+    @PutMapping("/products/{categoryId}/products/{productId}")
+    public ResponseEntity<ProductDto> updateCategoryWithProduct
+    (@RequestBody ProductDto productDto,
+     @PathVariable String categoryId,
+     @PathVariable String productId) {
+        log.info("Request is sending in service layer for update Category with categoryId:{} and productId:{}", categoryId, productId);
+        ProductDto productDto1 = productService.updateCategory(productId, categoryId);
+        log.info("Response has received from service layer for update Category with categoryId:{} and productId:{}", categoryId, productId);
+        return new ResponseEntity<ProductDto>(productDto1, HttpStatus.OK);
+    }
+    /**
+     * @param categoryId
+     * @return PegeableResponse<ProductDto>
+     * @author Manmohan Sharma
+     * @apiNote To get All Product of Category from database
+     * @since 1.0v
+     */
+    @GetMapping("/getPro/{categoryId}")
+    public ResponseEntity<PegeableResponse<ProductDto>> getAllProductofCategory
+            (@PathVariable String categoryId,
+             @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) int pageNumber,
+             @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) int pageSize,
+             @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+             @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false) String sortDir
+             )
+    {
+        log.info("Request is sending in service layer for get all product of Category with categoryId:{}",categoryId);
+        PegeableResponse<ProductDto> response = this.productService.getAllofCategory(categoryId, pageNumber, pageSize, sortBy, sortDir);
+        log.info("Response has received from service layer for get all product of Category with categoryId:{}",categoryId);
+        return new ResponseEntity<PegeableResponse<ProductDto>>(response,HttpStatus.OK);
     }
 
 }

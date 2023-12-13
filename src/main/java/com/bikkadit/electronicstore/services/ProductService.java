@@ -17,4 +17,11 @@ public interface ProductService {
     public PegeableResponse<ProductDto> getAllLive(int pageNumber,int pageSize,String sortBy,String sortDir);
 
     public PegeableResponse<ProductDto> searchByTitle(String subTitle,int pageNumber,int pageSize,String sortBy,String sortDir);
+
+    public ProductDto createWithCategory(ProductDto productDto,String categoryId);
+
+    public  ProductDto updateCategory(String productId,String categoryId);
+
+    public  PegeableResponse<ProductDto> getAllofCategory(String categoryId,int pageNumber,int pageSize,String sortBy,String sortDir);
+
 }
