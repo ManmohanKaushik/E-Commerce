@@ -105,7 +105,7 @@ public class UserController {
      * @since 1.0v
      */
     @GetMapping("/userAll")
-    public ResponseEntity<PegeableResponse<UserDto>> getall(
+    public ResponseEntity<PegeableResponse<UserDto>> getallUser(
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,

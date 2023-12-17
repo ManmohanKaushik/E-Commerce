@@ -2,6 +2,7 @@ package com.bikkadit.electronicstore.controller;
 
 import com.bikkadit.electronicstore.dto.UserDto;
 import com.bikkadit.electronicstore.entity.User;
+import com.bikkadit.electronicstore.helper.PegeableResponse;
 import com.bikkadit.electronicstore.services.UserService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 
+import java.util.Arrays;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,7 +36,7 @@ public class UserControllerTest {
     private ModelMapper mapper;
     @MockBean
     private UserService userService;
-     private User user;
+    private User user;
 
 
     @BeforeEach
@@ -91,6 +94,29 @@ public class UserControllerTest {
 
     }
 
+    @Test
+    public void getallUserTest() throws Exception {
+        UserDto object1 = UserDto.builder().name("Rahul").email("rha45@gmail.com").password("R156@").about("java devloper").build();
+        UserDto object2 = UserDto.builder().name("Sonu").email("sha45@gmail.com").password("R656@").about("java devloper").build();
+        UserDto object3 = UserDto.builder().name("Ram").email("raa45@gmail.com").password("R457@").about("java devloper").build();
+
+        PegeableResponse<UserDto> pegeableResponse = new PegeableResponse<>();
+        pegeableResponse.setContent(Arrays.asList(object1, object2, object3));
+        pegeableResponse.setLastPage(false);
+        pegeableResponse.setPageNumber(10);
+        pegeableResponse.setPageSize(10);
+        pegeableResponse.setTotalElements(100);
+
+        Mockito.when(userService.getall(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(), Mockito.anyString())).thenReturn(pegeableResponse);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/userAll/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(convertObjectToJsonString(pegeableResponse))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+    }
 
 }
 
