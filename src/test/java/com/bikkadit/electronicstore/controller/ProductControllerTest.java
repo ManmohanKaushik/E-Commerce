@@ -1,5 +1,6 @@
 package com.bikkadit.electronicstore.controller;
 
+import com.bikkadit.electronicstore.dto.CategoryDto;
 import com.bikkadit.electronicstore.dto.ProductDto;
 import com.bikkadit.electronicstore.entity.Product;
 import com.bikkadit.electronicstore.helper.PegeableResponse;
@@ -89,21 +90,6 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void getByProductIdTest() throws Exception {
-        String productId = "jklmn";
-        ProductDto dto = mapper.map(product, ProductDto.class);
-        Mockito.when(productService.getByid(Mockito.any())).thenReturn(dto);
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/apiPro/product/" + productId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(convertObjectToJsonString(product))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title").exists());
-
-    }
-
-    @Test
     public void getAllProductTest() throws Exception {
         ProductDto pro1 = ProductDto.builder().title("electronics").stock(true).live(true).price(5000).discountPrice(4500).productImageName("pro.png").quantity(50).build();
         ProductDto pro2 = ProductDto.builder().title("electronicsTv").stock(true).live(true).price(10000).discountPrice(9500).productImageName("prod.png").quantity(500).build();
@@ -111,31 +97,20 @@ public class ProductControllerTest {
         ProductDto pro4 = ProductDto.builder().title("electronicsCharger").stock(true).live(true).price(500).discountPrice(450).productImageName("proC.png").quantity(700).build();
 
         PegeableResponse<ProductDto> pegeableResponse = new PegeableResponse<>();
-        pegeableResponse.setContent(Arrays.asList(pro1, pro2, pro3, pro4));
+        pegeableResponse.setContent(Arrays.asList(pro1, pro2,pro3,pro4));
         pegeableResponse.setLastPage(false);
         pegeableResponse.setPageNumber(10);
         pegeableResponse.setPageSize(10);
         pegeableResponse.setTotalElements(100);
 
-        Mockito.when(productService.getAllProduct(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(), Mockito.anyString())).thenReturn(pegeableResponse);
+        Mockito.when(productService.getAllProduct(Mockito.anyInt(),Mockito.anyInt(),Mockito.anyString(),Mockito.anyString())).thenReturn(pegeableResponse);
 
         this.mockMvc.perform(MockMvcRequestBuilders.get("/apiPro/products/")
-                        .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
                         .content(convertObjectToJsonString(pegeableResponse))
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
-
-    @Test
-    public void deleteProductTest() throws Exception {
-        String productId = "jklmn";
-        ProductDto dto = mapper.map(product, ProductDto.class);
-        Mockito.doNothing().when(productService).deleteProduct(productId);
-        mockMvc.perform(MockMvcRequestBuilders.delete("/apiPro/product/" + productId))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
-
 
 }

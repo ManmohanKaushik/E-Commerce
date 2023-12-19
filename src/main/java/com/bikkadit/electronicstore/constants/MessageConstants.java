@@ -23,8 +23,6 @@ public class MessageConstants {
 
     public static final String QUANTITY_NOTVALID="Request Quantity is not valid";
 
-    public static final String CART_ID="CardId is not found";
-
 
 
 
