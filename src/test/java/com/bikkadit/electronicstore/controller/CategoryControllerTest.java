@@ -1,7 +1,6 @@
 package com.bikkadit.electronicstore.controller;
 
 import com.bikkadit.electronicstore.dto.CategoryDto;
-import com.bikkadit.electronicstore.dto.UserDto;
 import com.bikkadit.electronicstore.entity.Category;
 import com.bikkadit.electronicstore.helper.PegeableResponse;
 import com.bikkadit.electronicstore.services.CategoryService;

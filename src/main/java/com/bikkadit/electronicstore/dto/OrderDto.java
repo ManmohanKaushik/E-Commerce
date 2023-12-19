@@ -27,7 +27,7 @@ public class OrderDto {
 
     private String billingName;
 
-    private Date orderedDate;
+    private Date orderedDate=new Date();
 
     private Date deliveredDate;
 

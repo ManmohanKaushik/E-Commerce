@@ -1,4 +1,7 @@
 package com.bikkadit.electronicstore.repository;
 
-public interface OrderItemRepository {
+import com.bikkadit.electronicstore.entity.OrderItem;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface OrderItemRepository extends JpaRepository<OrderItem, Integer> {
 }

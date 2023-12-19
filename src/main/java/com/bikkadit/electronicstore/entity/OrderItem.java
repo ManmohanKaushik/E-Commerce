@@ -3,6 +3,7 @@ package com.bikkadit.electronicstore.entity;
 import lombok.*;
 
 import javax.persistence.*;
+
 @Entity
 @Table(name = "order_item")
 @AllArgsConstructor
@@ -10,8 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
-public class OrderItem
-{
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderItemId;
@@ -23,8 +23,8 @@ public class OrderItem
     @JoinColumn(name = "product_id")
     private Product product;
 
-//    @ManyToOne
-//    @JoinColumn(name = "order_id")
-//    private Order order;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
 }

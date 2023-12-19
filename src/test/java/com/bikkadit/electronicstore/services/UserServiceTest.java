@@ -8,9 +8,7 @@ import com.bikkadit.electronicstore.repository.UserRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -105,6 +103,7 @@ public class UserServiceTest {
     @Test
     public void deleteUserTest() throws IOException {
         String userId = "123klmn";
+       // String imageName= user.getImageName();
         Mockito.when(userRepo.findById("123klmn")).thenReturn(Optional.of(user));
         userServices.deleteUser(userId);
         Mockito.verify(userRepo, Mockito.times(1)).delete(user);
