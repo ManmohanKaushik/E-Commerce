@@ -15,6 +15,10 @@ public class OrderDto {
 
     private String orderId;
 
+    private String userId;
+
+    private String cartId;
+
     private String orderStatus="PENDING";
 
     private String paymentStatus="NOT-PAID";
