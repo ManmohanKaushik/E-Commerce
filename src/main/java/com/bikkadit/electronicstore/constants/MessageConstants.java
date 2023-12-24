@@ -1,5 +1,7 @@
 package com.bikkadit.electronicstore.constants;
 
+import com.bikkadit.electronicstore.exception.BadRequestException;
+
 public class MessageConstants {
     public static final String RESOURCEDELETE = "Data deleted Successfully";
     public static final String RESOURCENOTFOUND = "Resource not found for this id.";
@@ -28,5 +30,9 @@ public class MessageConstants {
     public static final String ORDER_ID="OrderId is not found";
 
     public static final String ORDER_DELETE="Order Data deleted Successfully";
+
+    public static final String AUTH_EXCEPTION ="Accesses Denied";
+
+    public static final String BAD_REQUEST_EXCEPTION="Invalid Username or Password";
 
 }
