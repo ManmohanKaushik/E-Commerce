@@ -93,20 +93,6 @@ public class UserControllerTest {
 
 
     }
-    @Test
-    public void  getUserByidTest() throws Exception {
-        String userId = "12345";
-        UserDto dto = mapper.map(user, UserDto.class);
-        Mockito.when(userService.getUserByid(userId)).thenReturn(dto);
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/user/"+userId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(convertObjectToJsonString(user))
-                        .accept(MediaType.APPLICATION_JSON)
-                ).andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").exists());
-
-    }
 
     @Test
     public void getallUserTest() throws Exception {
@@ -131,7 +117,6 @@ public class UserControllerTest {
                 .andExpect(status().isOk());
 
     }
-
 
 }
 

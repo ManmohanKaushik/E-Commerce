@@ -5,6 +5,7 @@ import com.bikkadit.electronicstore.dto.OrderDto;
 import com.bikkadit.electronicstore.entity.*;
 import com.bikkadit.electronicstore.exception.BadRequestException;
 import com.bikkadit.electronicstore.exception.ResourceNotFoundException;
+import com.bikkadit.electronicstore.helper.Helper;
 import com.bikkadit.electronicstore.helper.PegeableResponse;
 import com.bikkadit.electronicstore.repository.CartRepository;
 import com.bikkadit.electronicstore.repository.OrderRepository;
@@ -12,12 +13,17 @@ import com.bikkadit.electronicstore.repository.UserRepo;
 import com.bikkadit.electronicstore.services.OrderService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class OrderServiceImpl implements OrderService {
     @Autowired
@@ -68,22 +74,28 @@ public class OrderServiceImpl implements OrderService {
         cart.getItems().clear();
         cartRepository.save(cart);
         Order save = orderRepository.save(order);
-        return modelMapper.map(save,OrderDto.class);
+        return modelMapper.map(save, OrderDto.class);
     }
 
     @Override
     public void removeOrder(String orderId) {
-
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.ORDER_ID));
+        orderRepository.delete(order);
     }
 
     @Override
     public List<OrderDto> getOrderofUser(String userId) {
-
-        return null;
+        User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOTFOUND));
+        List<Order> orders = orderRepository.findByUser(user);
+        List<OrderDto> orderDtos = orders.stream().map(order -> modelMapper.map(order, OrderDto.class)).collect(Collectors.toList());
+        return orderDtos;
     }
 
     @Override
     public PegeableResponse<OrderDto> getAllOrders(int pageNumber, int pageSize, String sortBy, String sortDir) {
-        return null;
+        Sort sort=(sortDir.equalsIgnoreCase("desc"))?(Sort.by(sortBy).descending()):(Sort.by(sortBy).ascending());
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Page<Order> page = orderRepository.findAll(pageable);
+        return Helper.pegeableResponse(page,OrderDto.class);
     }
 }

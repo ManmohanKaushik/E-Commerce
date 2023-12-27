@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -39,11 +40,13 @@ public class UserServicesImpl implements UserService {
     @Value("${user.profile.image.path}")
     private String imagePath;
 
+
     @Override
     public UserDto createUser(UserDto userDto) {
         log.info("Request is sending into DAO layer for save user ");
         String userId = UUID.randomUUID().toString();
         userDto.setUserId(userId);
+       // userDto.setPassword(userDto.getPassword());
         User user = this.modelMapper.map(userDto, User.class);
         User save = this.userRepo.save(user);
         log.info("Response has  received  from DAO layer for save user");
@@ -93,18 +96,18 @@ public class UserServicesImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(String userId)  {
+    public void deleteUser(String userId) {
         log.info("Request is sending into DAO layer for delete user by userId:{}", userId);
         User user = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.RESOURCENOTFOUND));
         String fullPath = imagePath + user.getImageName();
-       try {
-           Path path = Paths.get(fullPath);
-           Files.delete(path);
-       }catch (NoSuchFileException e){
-           e.printStackTrace();
-       }catch (IOException ei){
-           ei.printStackTrace();
-       }
+        try {
+            Path path = Paths.get(fullPath);
+            Files.delete(path);
+        } catch (NoSuchFileException e) {
+            e.printStackTrace();
+        } catch (IOException ei) {
+            ei.printStackTrace();
+        }
         this.userRepo.deleteById(userId);
         log.info("Response has  received  from DAO layer for delete user by userId:{}", userId);
     }
