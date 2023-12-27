@@ -66,8 +66,8 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration builder) {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration builder) throws Exception {
 
-        return (AuthenticationManager) builder;
+        return  builder.getAuthenticationManager();
     }
 }

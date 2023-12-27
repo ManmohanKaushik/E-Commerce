@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -40,13 +41,21 @@ public class UserServicesImpl implements UserService {
     @Value("${user.profile.image.path}")
     private String imagePath;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Value("${normal.role.id}")
+    private String normalRoleId;
+
+    @Value("${admin.role.id}")
+    private String adminRoleId;
 
     @Override
     public UserDto createUser(UserDto userDto) {
         log.info("Request is sending into DAO layer for save user ");
         String userId = UUID.randomUUID().toString();
         userDto.setUserId(userId);
-       // userDto.setPassword(userDto.getPassword());
+        // userDto.setPassword(userDto.getPassword());
         User user = this.modelMapper.map(userDto, User.class);
         User save = this.userRepo.save(user);
         log.info("Response has  received  from DAO layer for save user");

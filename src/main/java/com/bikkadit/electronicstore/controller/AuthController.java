@@ -1,6 +1,8 @@
 package com.bikkadit.electronicstore.controller;
 
 import com.bikkadit.electronicstore.constants.MessageConstants;
+import com.bikkadit.electronicstore.dto.JwtRequest;
+import com.bikkadit.electronicstore.dto.JwtResponse;
 import com.bikkadit.electronicstore.dto.UserDto;
 import com.bikkadit.electronicstore.exception.BadRequestException;
 import com.bikkadit.electronicstore.security.JwtHelper;
@@ -16,9 +18,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -42,19 +42,31 @@ public class AuthController {
 
     public AuthController() {
     }
-private void doAutheticate(String email, String password){
-    UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(email,password);
-    try {
-        manager.authenticate(authenticationToken);
-    } catch (BadCredentialsException e) {
-        throw new BadRequestException(MessageConstants.BAD_REQUEST_EXCEPTION);
+
+    @PostMapping("/login")
+    public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request) {
+        this.doAutheticate(request.getEmail(), request.getPassword());
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(request.getEmail());
+        String token = this.jwtHelper.generateToken(userDetails);
+        UserDto userDto = mapper.map(userDetails, UserDto.class);
+        JwtResponse response = JwtResponse.builder().jwtToken(token).user(userDto).build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-}
+
+    private void doAutheticate(String email, String password) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
+        try {
+            manager.authenticate(authenticationToken);
+        } catch (BadCredentialsException e) {
+            throw new BadRequestException(MessageConstants.BAD_REQUEST_EXCEPTION);
+        }
+    }
 
     @GetMapping("/current")
     public ResponseEntity<UserDto> getCurrentUser(Principal principal) throws UsernameNotFoundException {
         String name = principal.getName();
-        return new ResponseEntity<>(mapper.map(userDetailsService.loadUserByUsername(name), UserDto.class),HttpStatus.OK);
+        return new ResponseEntity<>(mapper.map(userDetailsService.loadUserByUsername(name), UserDto.class), HttpStatus.OK);
 
     }
+
 }

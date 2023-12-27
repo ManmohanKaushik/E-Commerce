@@ -7,7 +7,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class JwtResponse {
-    private String jwtToken;
-    private UserDto user;
+public class RoleDto
+{
+    private String roleId;
+    private String roleName;
 }
