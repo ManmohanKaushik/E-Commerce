@@ -42,8 +42,11 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<CartItem> items =new ArrayList<>();
 
-   @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+   @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
    private List<Order> orders=new ArrayList<>();
+
+   @OneToOne(mappedBy = "user",cascade = CascadeType.REMOVE)
+   private Cart cart;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

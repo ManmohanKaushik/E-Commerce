@@ -54,7 +54,7 @@ private void doAutheticate(String email, String password){
     @GetMapping("/current")
     public ResponseEntity<UserDto> getCurrentUser(Principal principal) throws UsernameNotFoundException {
         String name = principal.getName();
-       //  return new ResponseEntity<>(mapper.map(userDetailsService.loadUserByUsername(name)),UserDto.class);
-        return null;
+        return new ResponseEntity<>(mapper.map(userDetailsService.loadUserByUsername(name), UserDto.class),HttpStatus.OK);
+
     }
 }
