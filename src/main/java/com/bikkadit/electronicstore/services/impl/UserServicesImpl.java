@@ -2,10 +2,12 @@ package com.bikkadit.electronicstore.services.impl;
 
 import com.bikkadit.electronicstore.constants.MessageConstants;
 import com.bikkadit.electronicstore.dto.UserDto;
+import com.bikkadit.electronicstore.entity.Role;
 import com.bikkadit.electronicstore.entity.User;
 import com.bikkadit.electronicstore.exception.ResourceNotFoundException;
 import com.bikkadit.electronicstore.helper.Helper;
 import com.bikkadit.electronicstore.helper.PegeableResponse;
+import com.bikkadit.electronicstore.repository.RoleRepository;
 import com.bikkadit.electronicstore.repository.UserRepo;
 import com.bikkadit.electronicstore.services.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -49,14 +51,18 @@ public class UserServicesImpl implements UserService {
 
     @Value("${admin.role.id}")
     private String adminRoleId;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public UserDto createUser(UserDto userDto) {
         log.info("Request is sending into DAO layer for save user ");
         String userId = UUID.randomUUID().toString();
         userDto.setUserId(userId);
-        // userDto.setPassword(userDto.getPassword());
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        Role role = roleRepository.findById(normalRoleId).get();
         User user = this.modelMapper.map(userDto, User.class);
+        user.getRoles().add(role);
         User save = this.userRepo.save(user);
         log.info("Response has  received  from DAO layer for save user");
         return this.modelMapper.map(save, UserDto.class);
