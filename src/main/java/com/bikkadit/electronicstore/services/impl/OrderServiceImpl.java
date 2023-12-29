@@ -11,12 +11,14 @@ import com.bikkadit.electronicstore.repository.CartRepository;
 import com.bikkadit.electronicstore.repository.OrderRepository;
 import com.bikkadit.electronicstore.repository.UserRepo;
 import com.bikkadit.electronicstore.services.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
@@ -25,6 +27,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Service
+@Slf4j
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private UserRepo userRepo;
@@ -40,6 +44,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto createOrder(OrderDto orderDto, String userId, String cartId) {
+        log.info("Request is sending in DAO layer for create Order.");
         User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOTFOUND));
 
         Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.CART_ID));
@@ -74,28 +79,35 @@ public class OrderServiceImpl implements OrderService {
         cart.getItems().clear();
         cartRepository.save(cart);
         Order save = orderRepository.save(order);
+        log.info("Response has received from DAO layer for create Order.");
         return modelMapper.map(save, OrderDto.class);
     }
 
     @Override
     public void removeOrder(String orderId) {
+        log.info("Request is sending in DAO layer for delete order:{} ", orderId);
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.ORDER_ID));
         orderRepository.delete(order);
+        log.info("Response has received from DAO layer for delete  orderId:{} ", orderId);
     }
 
     @Override
     public List<OrderDto> getOrderofUser(String userId) {
+        log.info("Request is sending in DAO layer for get Order userId:{} ", userId);
         User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOTFOUND));
         List<Order> orders = orderRepository.findByUser(user);
         List<OrderDto> orderDtos = orders.stream().map(order -> modelMapper.map(order, OrderDto.class)).collect(Collectors.toList());
+        log.info("Response has received from DAO layer for get  Order of userId:{} ", userId);
         return orderDtos;
     }
 
     @Override
     public PegeableResponse<OrderDto> getAllOrders(int pageNumber, int pageSize, String sortBy, String sortDir) {
-        Sort sort=(sortDir.equalsIgnoreCase("desc"))?(Sort.by(sortBy).descending()):(Sort.by(sortBy).ascending());
+        log.info("Request is sending into DAO layer for get all Order ");
+        Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         Page<Order> page = orderRepository.findAll(pageable);
-        return Helper.pegeableResponse(page,OrderDto.class);
+        log.info("Response has  received  from DAO layer for get all order ");
+        return Helper.pegeableResponse(page, OrderDto.class);
     }
 }
