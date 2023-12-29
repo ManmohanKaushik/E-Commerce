@@ -31,7 +31,7 @@ public class SecurityConfiguration {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    private final String[] PUBLIC_URLS={
+    private final String[] PUBLIC_URLS = {
             "/swagger-ui/**",
             "/webjars/**",
             "/swagger-resources/**",
@@ -39,15 +39,16 @@ public class SecurityConfiguration {
             "/v2/api-docs/**"
 // /** may be removed
     };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().cors().disable()
                 .authorizeRequests()
                 .antMatchers("/auth/login")
                 .permitAll()
-                .antMatchers(HttpMethod.POST,"/user")
+                .antMatchers(HttpMethod.POST, "/user")
                 .permitAll()
-                .antMatchers(HttpMethod.DELETE,"/user/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/user/**").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -75,13 +76,15 @@ public class SecurityConfiguration {
         return daoAuthenticationProvider;
     }
 
+    @Bean
     public PasswordEncoder passwordEncoder() {
 
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration builder) throws Exception {
 
-        return  builder.getAuthenticationManager();
+        return builder.getAuthenticationManager();
     }
 }

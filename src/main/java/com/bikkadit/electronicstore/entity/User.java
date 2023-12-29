@@ -39,7 +39,7 @@ public class User implements UserDetails {
     @Column(name = "user_image_Name")
     private String imageName;
 
-    @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<CartItem> items =new ArrayList<>();
 
    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
