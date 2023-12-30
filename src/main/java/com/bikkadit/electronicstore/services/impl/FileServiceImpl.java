@@ -18,7 +18,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public String uploadFile(MultipartFile file, String path) throws IOException {
-        log.info("Request is sending into DAO layer for upload Image ");
+        log.info("Initiating DAO call for upload Image ");
         String originalFilename = file.getOriginalFilename();
         log.info("Filename :{}", originalFilename);
         String fileName = UUID.randomUUID().toString();
@@ -33,7 +33,7 @@ public class FileServiceImpl implements FileService {
                 folder.mkdirs();
             }
             Files.copy(file.getInputStream(), Paths.get(fullpathwithfileName));
-            log.info("Response has  received  from DAO layer for upload Image ");
+            log.info("Completed  DAO call for upload Image ");
             return filenameWithextension;
         } else {
             throw new BadRequestException("File with extension " + extension + " is not allowed");
@@ -44,10 +44,10 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public InputStream getResource(String path, String name) throws FileNotFoundException {
-       log.info("Request is sending into DAO layer for get image : {}",name);
+       log.info("Initiating DAO call for get image : {}",name);
         String fullPath = path + File.separator + name;
         InputStream inputStream = new FileInputStream(fullPath);
-        log.info("Response has  received  from DAO layer for get Image :{} ",name);
+        log.info("Completed  DAO call for get Image :{} ",name);
         return inputStream;
     }
 

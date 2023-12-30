@@ -7,6 +7,7 @@ import com.bikkadit.electronicstore.dto.UserDto;
 import com.bikkadit.electronicstore.exception.BadRequestException;
 import com.bikkadit.electronicstore.security.JwtHelper;
 import com.bikkadit.electronicstore.services.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,8 +22,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
+import static com.bikkadit.electronicstore.constants.UriConstants.*;
+
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(AUTH_URI)
+@Slf4j
 public class AuthController {
     @Autowired
     private UserDetailsService userDetailsService;
@@ -43,13 +46,21 @@ public class AuthController {
     public AuthController() {
     }
 
-    @PostMapping("/login")
+    /**
+     * @author Manmohan Sharma
+     * @apiNote To addItemToCart data in database
+     * @since 1.0v
+     * @return CartDto
+     */
+    @PostMapping(AUTH_LOGIN)
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request) {
+        log.info("Initiated request for login  ");
         this.doAutheticate(request.getEmail(), request.getPassword());
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(request.getEmail());
         String token = this.jwtHelper.generateToken(userDetails);
         UserDto userDto = mapper.map(userDetails, UserDto.class);
         JwtResponse response = JwtResponse.builder().jwtToken(token).user(userDto).build();
+        log.info("Completed request for login  ");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -62,9 +73,17 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/current")
+    /**
+     * @author Manmohan Sharma
+     * @apiNote To addItemToCart data in database
+     * @since 1.0v
+     * @return CartDto
+     */
+    @GetMapping(GET_CURRENT_USER)
     public ResponseEntity<UserDto> getCurrentUser(Principal principal) throws UsernameNotFoundException {
+        log.info("Initiated request for get current user ");
         String name = principal.getName();
+        log.info("Completed request for get current user ");
         return new ResponseEntity<>(mapper.map(userDetailsService.loadUserByUsername(name), UserDto.class), HttpStatus.OK);
 
     }

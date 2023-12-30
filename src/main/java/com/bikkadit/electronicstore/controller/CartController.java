@@ -11,8 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.bikkadit.electronicstore.constants.UriConstants.*;
+
 @RestController
-@RequestMapping("/apiCarts")
+@RequestMapping(CART_URI)
 @Slf4j
 public class CartController {
     @Autowired
@@ -25,11 +27,11 @@ public class CartController {
      * @since 1.0v
      * @return CartDto
      */
-    @PostMapping("/cart/{userId}")
+    @PostMapping(ADD_CART)
     public ResponseEntity<CartDto> addItemToCart(@PathVariable String userId, @RequestBody AddItemToCartRequest request) {
-        log.info("Request is sending in service layer for add Item To Cart  with userId :{} " ,userId);
+        log.info("Initiated request for add Item To Cart  with userId :{} " ,userId);
         CartDto cartDto = cartService.addItemToCart(userId, request);
-        log.info("Response has received from service layer for add Item To Cart  with userId :{} " ,userId);
+        log.info("Completed request for add Item To Cart  with userId :{} " ,userId);
         return new ResponseEntity<>(cartDto,HttpStatus.OK);
     }
     /**
@@ -39,16 +41,16 @@ public class CartController {
      * @since 1.0v
      */
 
-    @DeleteMapping("/cart/{userId}/item/{itemId}")
+    @DeleteMapping(REMOVE_CART_ITEM)
     public ResponseEntity<ApiResponse> removeItemFromCart(@PathVariable String userId, @PathVariable Integer itemId) {
-        log.info("Request is sending in service layer for remove Item form Cart  with userId :{} and itemId:{} " ,userId,itemId);
+        log.info("Initiated request for remove Item form Cart  with userId :{} and itemId:{} " ,userId,itemId);
         cartService.removeItemFromCart(userId, itemId);
         ApiResponse response = ApiResponse.builder()
                 .message(MessageConstants.RESOURCEDELETE)
                 .Success(true)
                 .status(HttpStatus.OK)
                 .build();
-        log.info("Response has received from service layer for remove Item form Cart  with userId :{} and itemId:{} " ,userId,itemId);
+        log.info("Completed request for remove Item form Cart  with userId :{} and itemId:{} " ,userId,itemId);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
     /**
@@ -57,16 +59,16 @@ public class CartController {
      * @param userId
      * @since 1.0v
      */
-    @DeleteMapping("/cart/{userId}")
+    @DeleteMapping(CLEAR_CART)
     public ResponseEntity<ApiResponse> clearCart(@PathVariable String userId) {
-        log.info("Request is sending in service layer for clear Cart userId :{} " ,userId);
+        log.info("Initiated request for clear Cart with userId :{} " ,userId);
         cartService.clearCart(userId);
         ApiResponse response = ApiResponse.builder()
                 .message(MessageConstants.CART_BLANK)
                 .Success(true)
                 .status(HttpStatus.OK)
                 .build();
-        log.info("Response has received from service layer for clear Cart userId :{} " ,userId);
+        log.info("Completed request for clear Cart  with userId :{} " ,userId);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
     /**
@@ -76,11 +78,11 @@ public class CartController {
      * @return CartDto
      * @since 1.0v
      */
-    @GetMapping("/cart/{userId}")
+    @GetMapping(GET_CART_BY_USER)
     public ResponseEntity<CartDto> getCartByUser(@PathVariable String userId) {
-        log.info("Request is sending in service layer for get Cart by userId :{} " ,userId);
+        log.info("Initiated request for get Cart with userId :{} " ,userId);
         CartDto cartDto = cartService.getCartByUser(userId);
-        log.info("Response has received from service layer for get Cart by userId :{} " ,userId);
+        log.info("Completed request for get Cart with userId :{} " ,userId);
         return new ResponseEntity<>(cartDto,HttpStatus.OK);
     }
 }

@@ -29,55 +29,55 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto createCategory(CategoryDto categoryDto) {
-        log.info("Request is sending in DAO layer for create Category.");
+        log.info("Initiating DAO call for create Category.");
         String categoryId = UUID.randomUUID().toString();
         categoryDto.setCategoryId(categoryId);
         Category category = mapper.map(categoryDto, Category.class);
         Category saveCategory = this.categoryRepository.save(category);
-        log.info("Response has received from DAO layer for create Category.");
+        log.info("Completed  DAO call for create Category.");
         return mapper.map(saveCategory, CategoryDto.class);
     }
 
     @Override
     public CategoryDto updateCategory(CategoryDto categoryDto, String categoryId) {
-        log.info("Request is sending in DAO layer for update categoryId:{} ", categoryId);
+        log.info("Initiating DAO call for update  category with categoryId:{} ", categoryId);
         Category category = this.categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.CATEGORYID_NOTFOUND));
         category.setTitle(categoryDto.getTitle());
         category.setDescription(categoryDto.getDescription());
         category.setCoverImage(categoryDto.getCoverImage());
         Category updateCategory = this.categoryRepository.save(category);
-        log.info("Response has received from DAO layer for update  categoryId:{} ", categoryId);
+        log.info("Completed  DAO call for update category with categoryId:{} ", categoryId);
         return mapper.map(updateCategory, CategoryDto.class);
     }
 
     @Override
     public void deleteCategory(String categoryId) {
-        log.info("Request is sending in DAO layer for delete categoryId:{} ", categoryId);
+        log.info("Initiating DAO call for delete category with categoryId:{} ", categoryId);
         Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.CATEGORYID_NOTFOUND));
         this.categoryRepository.deleteById(categoryId);
-        log.info("Response has received from DAO layer for delete  categoryId:{} ", categoryId);
+        log.info("Completed  DAO call for delete category with categoryId:{} ", categoryId);
 
     }
 
     @Override
     public CategoryDto getCategoryId(String categoryId) {
-        log.info("Request is sending in DAO layer for get categoryId:{} ", categoryId);
+        log.info("Initiating DAO call for get  category with categoryId:{} ", categoryId);
         Category getCategory = this.categoryRepository
                 .findById(categoryId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.CATEGORYID_NOTFOUND));
-        log.info("Response has received from DAO layer for get  categoryId:{} ", categoryId);
+        log.info("Completed  DAO call for get category with categoryId:{} ", categoryId);
         return mapper.map(getCategory, CategoryDto.class);
     }
 
     @Override
     public PegeableResponse<CategoryDto> getAll(int pageNumber, int pageSize, String sortBy, String sortDir) {
-        log.info("Request is sending into DAO layer for get all category ");
+        log.info("Initiating DAO call for get all category ");
         // Sort sort=(sortDir.equalsIgnoreCase("desc"))?Sort.by(sortBy).descending();
         //Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()):
         PageRequest request = PageRequest.of(pageNumber, pageSize);
         Page<Category> all = this.categoryRepository.findAll(request);
         PegeableResponse<CategoryDto> response = Helper.pegeableResponse(all, CategoryDto.class);
-        log.info("Response has  received  from DAO layer for get all category ");
+        log.info("Completed  DAO call for get all category ");
         return response;
     }
 }

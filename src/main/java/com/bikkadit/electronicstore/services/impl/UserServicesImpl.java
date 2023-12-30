@@ -56,7 +56,7 @@ public class UserServicesImpl implements UserService {
 
     @Override
     public UserDto createUser(UserDto userDto) {
-        log.info("Request is sending into DAO layer for save user ");
+        log.info("Initiating DAO call for save user ");
         String userId = UUID.randomUUID().toString();
         userDto.setUserId(userId);
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -64,14 +64,14 @@ public class UserServicesImpl implements UserService {
         User user = this.modelMapper.map(userDto, User.class);
         user.getRoles().add(role);
         User save = this.userRepo.save(user);
-        log.info("Response has  received  from DAO layer for save user");
+        log.info("Completed  DAO call for save user");
         return this.modelMapper.map(save, UserDto.class);
 
     }
 
     @Override
     public UserDto updateUser(UserDto userDto, String userId) {
-        log.info("Request is sending into DAO layer for update user userId:{}", userId);
+        log.info("Initiating DAO call for update user with userId:{}", userId);
         User user = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.RESOURCENOTFOUND));
         user.setGender(userDto.getGender());
         user.setName(userDto.getName());
@@ -79,40 +79,40 @@ public class UserServicesImpl implements UserService {
         user.setPassword(userDto.getPassword());
         user.setImageName(userDto.getImageName());
         User save = this.userRepo.save(user);
-        log.info("Response has  received  from DAO layer for update user userId:{}", userId);
+        log.info("Completed  DAO call for update user with userId:{}", userId);
         return this.modelMapper.map(save, UserDto.class);
     }
 
     @Override
     public UserDto getUserByid(String userId) {
-        log.info("Request is sending into DAO layer for get user by userId:{}", userId);
+        log.info("Initiating DAO call for get user with userId:{}", userId);
         User user = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.RESOURCENOTFOUND));
-        log.info("Response has  received  from DAO layer for get user by userId:{}", userId);
+        log.info("Completed  DAO call for get user with userId:{}", userId);
         return this.modelMapper.map(user, UserDto.class);
     }
 
     @Override
     public UserDto getUserByemail(String email) {
-        log.info("Request is sending into DAO layer for get user by email:{}", email);
+        log.info("Initiating DAO call for get user with  email:{}", email);
         User user = this.userRepo.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.EMAILID_NOTFOUND));
-        log.info("Response has  received  from DAO layer for get user by email:{}", email);
+        log.info("Completed  DAO call for get user with email:{}", email);
         return this.modelMapper.map(user, UserDto.class);
     }
 
     @Override
     public PegeableResponse<UserDto> getall(int pageNumber, int pageSize, String sortBy, String sortDir) {
-        log.info("Request is sending into DAO layer for get all user ");
+        log.info("Initiating DAO call for get all user ");
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<User> all = this.userRepo.findAll(pageable);
 
         PegeableResponse<UserDto> response = Helper.pegeableResponse(all, UserDto.class);
-        log.info("Response has  received  from DAO layer for get all user ");
+        log.info("Completed  DAO call for get all user ");
         return response;
     }
 
     @Override
     public void deleteUser(String userId) {
-        log.info("Request is sending into DAO layer for delete user by userId:{}", userId);
+        log.info("Initiating DAO call for delete user with userId:{}", userId);
         User user = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.RESOURCENOTFOUND));
         String fullPath = imagePath + user.getImageName();
         try {
@@ -124,17 +124,17 @@ public class UserServicesImpl implements UserService {
             ei.printStackTrace();
         }
         this.userRepo.deleteById(userId);
-        log.info("Response has  received  from DAO layer for delete user by userId:{}", userId);
+        log.info("Completed  DAO call for delete user with userId:{}", userId);
     }
 
     @Override
     public List<UserDto> searchUser(String keyword) {
-        log.info("Request is sending into DAO layer for search user by keyword:{}", keyword);
+        log.info("Initiating DAO call for search user with keyword:{}", keyword);
         List<UserDto> collectDto = this.userRepo.findByNameContaining(keyword)
                 .stream()
                 .map((e) -> this.modelMapper.map(e, UserDto.class))
                 .collect(Collectors.toList());
-        log.info("Response has  received  from DAO layer for search user by keyword:{}", keyword);
+        log.info("Completed  DAO call for search user with keyword:{}", keyword);
         return collectDto;
     }
 

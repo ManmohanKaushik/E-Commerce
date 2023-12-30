@@ -49,7 +49,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDto addItemToCart(String userId, AddItemToCartRequest request) {
-        log.info("Request is sending in DAO layer for add Item to Cart userId:{} ", userId);
+        log.info("Initiating DAO call for add Item to Cart userId:{} ", userId);
         Integer quantity = request.getQuantity();
         String productId = request.getProductId();
         if (quantity<=0){
@@ -89,34 +89,34 @@ public class CartServiceImpl implements CartService {
         }
         cart.setUser(user);
         Cart updatedCart = cartRepository.save(cart);
-        log.info("Response has received from DAO layer for add Item to Cart userId:{} ", userId);
+        log.info("Completed  DAO call for add Item to Cart userId:{} ", userId);
         return mapper.map(updatedCart, CartDto.class);
     }
 
     @Override
     public void removeItemFromCart(String userId, Integer cartItem) {
-        log.info("Request is sending in DAO layer for remove Item from Cart with userId:{} ", userId, "and cartIem:{}", cartItem);
+        log.info("Initiating DAO call for remove Item from Cart with userId:{} and cartIem:{}",userId, cartItem);
         CartItem cartItem1 = cartItemRepository.findById(cartItem).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.CART_ITEM));
         cartItemRepository.delete(cartItem1);
-        log.info("Response has received from DAO layer for remove Item from Cart with userId:{} ", userId, "and cartIem:{}", cartItem);
+        log.info("Completed  DAO call for remove Item from Cart with userId:{} and cartIem:{}",userId, cartItem);
     }
 
     @Override
     public void clearCart(String userId) {
-        log.info("Request is sending in DAO layer for clearCart userId:{} ", userId);
+        log.info("Initiating DAO call for clearCart userId:{} ", userId);
         User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.RESOURCENOTFOUND));
         Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOTFOUND));
         cart.getItems().clear();
         cartRepository.save(cart);
-        log.info("Response has received from DAO layer for clearCart userId:{} ", userId);
+        log.info("Completed  DAO call for clearCart userId:{} ", userId);
     }
 
     @Override
     public CartDto getCartByUser(String userId) {
-        log.info("Request is sending in DAO layer for get Cart By User with userId:{} ", userId);
+        log.info("Initiating DAO call for get Cart By User with userId:{} ", userId);
         User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.RESOURCENOTFOUND));
         Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOTFOUND));
-        log.info("Response has received from  DAO layer for get Cart By User with userId:{} ", userId);
+        log.info("Completed  DAO call for get Cart By User with userId:{} ", userId);
         return mapper.map(cart, CartDto.class);
     }
 }

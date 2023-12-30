@@ -44,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto createOrder(OrderDto orderDto, String userId, String cartId) {
-        log.info("Request is sending in DAO layer for create Order.");
+        log.info("Initiating DAO call for create Order.");
         User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOTFOUND));
 
         Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.CART_ID));
@@ -79,35 +79,35 @@ public class OrderServiceImpl implements OrderService {
         cart.getItems().clear();
         cartRepository.save(cart);
         Order save = orderRepository.save(order);
-        log.info("Response has received from DAO layer for create Order.");
+        log.info("Completed  DAO call for create  Order.");
         return modelMapper.map(save, OrderDto.class);
     }
 
     @Override
     public void removeOrder(String orderId) {
-        log.info("Request is sending in DAO layer for delete order:{} ", orderId);
+        log.info("Initiating DAO call for delete  order with order:{} ", orderId);
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.ORDER_ID));
         orderRepository.delete(order);
-        log.info("Response has received from DAO layer for delete  orderId:{} ", orderId);
+        log.info("Completed  DAO call for delete order with orderId:{} ", orderId);
     }
 
     @Override
     public List<OrderDto> getOrderofUser(String userId) {
-        log.info("Request is sending in DAO layer for get Order userId:{} ", userId);
+        log.info("Initiating DAO call for get Order userId:{} ", userId);
         User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOTFOUND));
         List<Order> orders = orderRepository.findByUser(user);
         List<OrderDto> orderDtos = orders.stream().map(order -> modelMapper.map(order, OrderDto.class)).collect(Collectors.toList());
-        log.info("Response has received from DAO layer for get  Order of userId:{} ", userId);
+        log.info("Completed  DAO call for get  Order of userId:{} ", userId);
         return orderDtos;
     }
 
     @Override
     public PegeableResponse<OrderDto> getAllOrders(int pageNumber, int pageSize, String sortBy, String sortDir) {
-        log.info("Request is sending into DAO layer for get all Order ");
+        log.info("Initiating DAO call for get all Order ");
         Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         Page<Order> page = orderRepository.findAll(pageable);
-        log.info("Response has  received  from DAO layer for get all order ");
+        log.info("Completed  DAO call for get all order ");
         return Helper.pegeableResponse(page, OrderDto.class);
     }
 }

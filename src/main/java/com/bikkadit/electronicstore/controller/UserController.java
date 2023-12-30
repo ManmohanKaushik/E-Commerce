@@ -24,9 +24,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import static com.bikkadit.electronicstore.constants.UriConstants.*;
+
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(USER_URI)
 @Slf4j
 public class UserController {
     @Autowired
@@ -45,11 +47,11 @@ public class UserController {
      * @apiNote To create data in database
      * @since 1.0v
      */
-    @PostMapping("/user")
+    @PostMapping(SAVE_USER)
     public ResponseEntity<UserDto> saveUser(@Valid @RequestBody UserDto userDto) {
-        log.info("Request is sending in service layer for save user.");
+        log.info("Initiated request  for save user.");
         UserDto save = this.userService.createUser(userDto);
-        log.info("Response has received from service layer for save user.");
+        log.info("Completed request for save user.");
         return new ResponseEntity<UserDto>(save, HttpStatus.CREATED);
     }
 
@@ -60,11 +62,11 @@ public class UserController {
      * @apiNote To update data in database
      * @since 1.0v
      */
-    @PutMapping("/user/{userId}")
+    @PutMapping(UPDATE_USER)
     public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto, @PathVariable String userId) {
-        log.info("Request is sending in service layer for update user containing userId:{}", userId);
+        log.info("Initiated request  for update user with userId:{}", userId);
         UserDto dto = this.userService.updateUser(userDto, userId);
-        log.info("Response has received from service layer for updated user containing userId:{}", userId);
+        log.info("Completed request for updated user with userId:{}", userId);
         return new ResponseEntity<UserDto>(dto, HttpStatus.CREATED);
     }
 
@@ -75,11 +77,11 @@ public class UserController {
      * @apiNote To get data by id from database
      * @since 1.0v
      */
-    @GetMapping("/user/{userId}")
+    @GetMapping(GET_USER_BY_ID)
     public ResponseEntity<UserDto> getUserByid(@PathVariable String userId) {
-        log.info("Request is sending in service layer for get user by userId:{}", userId);
+        log.info("Initiated request  for get user with userId:{}", userId);
         UserDto byid = this.userService.getUserByid(userId);
-        log.info("Response has received from service layer for get user by  userId:{}", userId);
+        log.info("Completed request for get user with  userId:{}", userId);
         return new ResponseEntity<UserDto>(byid, HttpStatus.OK);
     }
 
@@ -90,11 +92,11 @@ public class UserController {
      * @apiNote To get data by email from database
      * @since 1.0v
      */
-    @GetMapping("/userEmail/{email}")
+    @GetMapping(GET_USER_BY_EMAIL)
     public ResponseEntity<UserDto> getUserByemail(@PathVariable String email) {
-        log.info("Request is sending in service layer for get user by  email:{}", email);
+        log.info("Initiated request  for get user with email:{}", email);
         UserDto byemail = this.userService.getUserByemail(email);
-        log.info("Response has received from service layer for get user by  email:{}", email);
+        log.info("Completed request for get user with  email:{}", email);
         return new ResponseEntity<UserDto>(byemail, HttpStatus.OK);
     }
 
@@ -104,7 +106,7 @@ public class UserController {
      * @apiNote To get all data from database
      * @since 1.0v
      */
-    @GetMapping("/userAll")
+    @GetMapping(GET_ALL_USER)
     public ResponseEntity<PegeableResponse<UserDto>> getallUser(
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) int pageSize,
@@ -112,10 +114,10 @@ public class UserController {
             @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false) String sortDir
     ) {
 
-        log.info("Request is sending in service layer for get all user data ");
+        log.info("Initiated request  for get all user data ");
         PegeableResponse<UserDto> getall = this.userService.getall(pageNumber, pageSize, sortBy, sortDir);
 
-        log.info("Response has received from service layer for get all user data ");
+        log.info("Completed request for get all user data ");
         return new ResponseEntity<PegeableResponse<UserDto>>(getall, HttpStatus.OK);
     }
 
@@ -126,11 +128,11 @@ public class UserController {
      * @author Manmohan Sharma
      * @since 1.0v
      */
-    @DeleteMapping("/user/{userId}")
+    @DeleteMapping(DELETE_USER)
     public ResponseEntity<ApiResponse> deleteByid(@PathVariable String userId) throws IOException {
-        log.info("Request is sending in service layer for delete user  userId:{}", userId);
+        log.info("Initiated request  for delete user with userId:{}", userId);
         this.userService.deleteUser(userId);
-        log.info("Response has received from service layer for delete user userId:{}", userId);
+        log.info("Completed request for delete user  with userId:{}", userId);
         return new ResponseEntity<ApiResponse>(new ApiResponse(MessageConstants.RESOURCEDELETE, true), HttpStatus.OK);
     }
 
@@ -141,11 +143,11 @@ public class UserController {
      * @apiNote To search data by keyword from database
      * @since 1.0v
      */
-    @GetMapping("/search/{keyword}")
+    @GetMapping(SEARCH_USER)
     public ResponseEntity<List<UserDto>> searchUser(@PathVariable String keyword) {
-        log.info("Request is sending in service layer for search user by keyword:{}", keyword);
+        log.info("Initiated request  for search user with keyword:{}", keyword);
         List<UserDto> searchUser = this.userService.searchUser(keyword);
-        log.info("Response has received from service layer for search user by keyword:{}", keyword);
+        log.info("Completed request for search user with keyword:{}", keyword);
         return new ResponseEntity<List<UserDto>>(searchUser, HttpStatus.OK);
     }
 
@@ -156,27 +158,28 @@ public class UserController {
      * @apiNote To uploadUserImage in database
      * @since 1.0v
      */
-    @PostMapping("/image/{userId}")
+    @PostMapping(UPLOAD_USER_IMAGE)
     public ResponseEntity<ImageResponse> uploadUserImage(@RequestParam ("userImage")MultipartFile image, @PathVariable String userId) throws IOException {
-        log.info("Request is sending in service layer for uploadUserImage with userId:{}", userId);
+        log.info("Initiated request  for upload UserImage with userId:{}", userId);
         String imageName = this.fileService.uploadFile(image, imageUploadPath);
         UserDto userDto = this.userService.getUserByid(userId);
         userDto.setImageName(imageName);
         UserDto updatedImage = this.userService.updateUser(userDto, userId);
         ImageResponse imageResponse = ImageResponse.builder().message(MessageConstants.USER_IMAGE).status(HttpStatus.CREATED).imageName(imageName).Success(true).build();
-        log.info("Response has received from service layer for uploadUserImage with userId:{}", userId);
+        log.info("Completed request for upload UserImage with userId:{}", userId);
         return new ResponseEntity<>(imageResponse, HttpStatus.CREATED);
     }
 
-    @GetMapping("/image/{userId}")
+    @GetMapping(SERVER_USER_IMAGE)
     public void serverUserImage(@PathVariable String userId, HttpServletResponse response) throws IOException {
         UserDto user = this.userService.getUserByid(userId);
-        log.info("User image name :{}", user.getImageName());
+        log.info("Initiated request  for User image name :{}", user.getImageName());
         InputStream resource = this.fileService.getResource(imageUploadPath, user.getImageName());
        // response.setContentType(MediaType.IMAGE_PNG_VALUE);
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
        // response.setContentType(MediaType.APPLICATION_PDF_VALUE);
         StreamUtils.copy(resource, response.getOutputStream());
+        log.info("Completed request for user image name :{} ",user.getImageName());
 
     }
 }
