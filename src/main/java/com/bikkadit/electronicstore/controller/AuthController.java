@@ -43,8 +43,7 @@ public class AuthController {
     @Autowired
     private JwtHelper jwtHelper;
 
-    public AuthController() {
-    }
+
 
     /**
      * @author Manmohan Sharma
