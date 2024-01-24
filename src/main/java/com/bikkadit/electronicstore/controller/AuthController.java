@@ -89,5 +89,9 @@ public class AuthController {
         return new ResponseEntity<>(mapper.map(userDetailsService.loadUserByUsername(name), UserDto.class), HttpStatus.OK);
 
     }
-
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> registerNewUser(@RequestBody UserDto userDto){
+        UserDto newUser = this.userService.registerNewUser(userDto);
+        return new ResponseEntity<UserDto>(newUser,HttpStatus.CREATED);
+    }
 }

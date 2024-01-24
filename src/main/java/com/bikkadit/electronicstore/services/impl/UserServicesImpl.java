@@ -53,11 +53,23 @@ public class UserServicesImpl implements UserService {
     private String adminRoleId;
     @Autowired
     private RoleRepository roleRepository;
+    String userId = UUID.randomUUID().toString();
+    @Override
+    public UserDto registerNewUser(UserDto userDto) {
+
+        User user = this.modelMapper.map(userDto, User.class);
+        user.setUserId(userId);
+        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+        Role role = this.roleRepository.findById(normalRoleId).get();
+        user.getRoles().add(role);
+        User saveNewUser = this.userRepo.save(user);
+        return this.modelMapper.map(saveNewUser, UserDto.class);
+    }
 
     @Override
     public UserDto createUser(UserDto userDto) {
         log.info("Initiating DAO call for save user ");
-        String userId = UUID.randomUUID().toString();
+
         userDto.setUserId(userId);
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         Role role = roleRepository.findById(normalRoleId).get();
