@@ -26,9 +26,11 @@ import java.security.Principal;
 
 import static com.bikkadit.electronicstore.constants.UriConstants.*;
 
+@CrossOrigin(origins = "http://localhost:9090", exposedHeaders = "token")
 @RestController
 @RequestMapping(AUTH_URI)
 @Slf4j
+
 public class AuthController {
     @Autowired
     private UserDetailsService userDetailsService;
@@ -54,7 +56,7 @@ public class AuthController {
      * @return CartDto
      */
     @PostMapping(AUTH_LOGIN)
-    @Secured("ROLE_ADMIN")
+   // @Secured("ROLE_ADMIN")
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request) {
         log.info("Initiated request for login  ");
         this.doAutheticate(request.getEmail(), request.getPassword());
